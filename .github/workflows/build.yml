@@ -44,9 +44,14 @@ jobs:
           export ANDROID_SDK_ROOT=/opt/android-sdk
           export ANDROID_NDK_HOME=/opt/android-sdk/ndk/25.2.9519653
           export PATH=$PATH:/opt/android-sdk/cmdline-tools/latest/bin:/opt/android-sdk/platform-tools
-          
-    
-          
+
+      - name: Debug: Check installed SDK components
+        run: |
+          echo "Existing build-tools:"
+          ls -la /opt/android-sdk/build-tools/ || echo "No build-tools found!"
+          echo "Checking available packages:"
+          sdkmanager --list || echo "SDK manager error!"
+
       - name: Manually install build-tools & aidl
         run: |
           sdkmanager --sdk_root=$ANDROID_HOME --install "build-tools;30.0.3" "platform-tools" "platforms;android-30" "cmdline-tools;latest" "ndk;25.2.9519653"
@@ -55,7 +60,7 @@ jobs:
       - name: Verify SDK installation
         run: |
           ls -la /opt/android-sdk/build-tools/
-          ls -la /opt/android-sdk/cmdline-tools/latest/bin/
+          ls -la /opt/android-sdk/build-tools/30.0.3/
 
       - name: Initialize Buildozer
         run: |
@@ -63,7 +68,7 @@ jobs:
 
       - name: Build APK
         run: |
-          buildozer -v android debug || (cat /opt/android-sdk/build-tools/31.0.0/package.xml && exit 1)
+          buildozer -v android debug || (cat /opt/android-sdk/build-tools/30.0.3/package.xml && exit 1)
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
