@@ -54,8 +54,8 @@ jobs:
 
       - name: Manually install build-tools & aidl
         run: |
-          sdkmanager --sdk_root=$ANDROID_HOME --install "build-tools;30.0.3" "platform-tools" "platforms;android-30" "cmdline-tools;latest" "ndk;25.2.9519653"
-          ls -la /opt/android-sdk/build-tools/30.0.3/
+          sdkmanager --verbose --sdk_root=$ANDROID_HOME --install "build-tools;30.0.3" "platform-tools" "platforms;android-30" "cmdline-tools;latest" "ndk;25.2.9519653" || echo "SDK manager install failed!"
+
 
       - name: Verify SDK installation
         run: |
