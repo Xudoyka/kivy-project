@@ -45,7 +45,7 @@ jobs:
           export ANDROID_NDK_HOME=/opt/android-sdk/ndk/25.2.9519653
           export PATH=$PATH:/opt/android-sdk/cmdline-tools/latest/bin:/opt/android-sdk/platform-tools
 
-      - name: Debug: Check installed SDK components
+      - name: Debug:Check installed SDK components
         run: |
           echo "Existing build-tools:"
           ls -la /opt/android-sdk/build-tools/ || echo "No build-tools found!"
