@@ -67,7 +67,11 @@ jobs:
           if [ ! -d "/opt/android-sdk/build-tools/30.0.3" ]; then
             mkdir -p /opt/android-sdk/build-tools/30.0.3
           fi
-      
+      - name: Debug:Check installed SDK components
+        run: |
+          echo "Existing build-tools:"
+          ls -la /opt/android-sdk/build-tools/ || echo "No build-tools found!"
+          sdkmanager --list || echo "SDK manager error!"
       - name: Final SDK Check
         run: |
           echo "SDK Installed Packages:"
