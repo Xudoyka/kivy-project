@@ -54,8 +54,20 @@ jobs:
 
       - name: Install necessary SDK components
         run: |
-          sdkmanager --sdk_root=$ANDROID_HOME --install "platform-tools" "platforms;android-30" "build-tools;30.0.3" "cmdline-tools;latest" "ndk;25.2.9519653"
-
+          sdkmanager --sdk_root=$ANDROID_HOME --install \
+            "platform-tools" "platforms;android-30" "build-tools;30.0.3" \
+            "cmdline-tools;latest" "ndk;25.2.9519653" "system-images;android-30;google_apis;x86_64"
+          
+          # AIDL ni o‘rnatish
+          yes | sdkmanager --sdk_root=$ANDROID_HOME --install "build-tools;30.0.3"
+          yes | sdkmanager --sdk_root=$ANDROID_HOME --licenses
+          
+      - name: Verify Build-Tools Directory
+        run: |
+          if [ ! -d "/opt/android-sdk/build-tools/30.0.3" ]; then
+            mkdir -p /opt/android-sdk/build-tools/30.0.3
+          fi
+      
       - name: Final SDK Check
         run: |
           echo "SDK Installed Packages:"
