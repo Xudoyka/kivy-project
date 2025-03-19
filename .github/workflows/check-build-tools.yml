@@ -1,0 +1,23 @@
+name: Check Android Build-Tools
+
+on: [push, pull_request]
+
+jobs:
+  check-build-tools:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up JDK
+        uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+
+      - name: Install Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: List available SDK packages
+        run: sdkmanager --list | grep "build-tools" || echo "No build-tools found!"
