@@ -84,7 +84,10 @@ jobs:
       - name: Initialize Buildozer
         run: |
           if [ ! -f "buildozer.spec" ]; then buildozer init; fi
-      
+      - name: Clean old build files
+        run: |
+          rm -rf .buildozer bin ~/.gradle ~/.buildozer || true
+          buildozer android clean || true
       - name: Build APK
         run: |
           buildozer -v android debug 2>&1 | tee buildozer_log.txt
