@@ -112,5 +112,5 @@ jobs:
         uses: actions/upload-artifact@v4
         if: success()
         with:
-          name: Kivy-APK
+          name: My-Android-App#Kivy-APK
           path: bin/**/*.apk
