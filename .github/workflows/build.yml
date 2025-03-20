@@ -61,14 +61,14 @@ jobs:
         run: |
           sdkmanager --sdk_root=$ANDROID_HOME --install \
             "platform-tools" "platforms;android-30" "build-tools;30.0.3" \
-            "cmdline-tools;latest" "ndk;25.2.9519653" "system-images;android-30;google_apis;x86_64"
+            "cmdline-tools;latest" "ndk;23.2.856831" "system-images;android-30;google_apis;x86_64"
           
           # AIDL ni o‘rnatish
           yes | sdkmanager --sdk_root=$ANDROID_HOME --install "build-tools;30.0.3"
           yes | sdkmanager --sdk_root=$ANDROID_HOME --licenses
 
           # NDK’ni qo‘lda o‘rnatish
-          sdkmanager --sdk_root=$ANDROID_HOME --install "ndk;25.2.9519653"
+          sdkmanager --sdk_root=$ANDROID_HOME --install "ndk;23.2.856831"
 
           # SDK litsenziyalarini qabul qilish
           yes | sdkmanager --sdk_root=$ANDROID_HOME --licenses
