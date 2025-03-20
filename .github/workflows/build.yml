@@ -50,6 +50,13 @@ jobs:
         run: |
           which sdkmanager || echo "SDKMANAGER NOT FOUND!"
           sdkmanager --list || echo "SDKMANAGER NOT WORKING!"
+
+      - name: Download and Set Up NDK
+        run: |
+          wget https://dl.google.com/android/repository/android-ndk-r25c-linux.zip -O android-ndk.zip
+          unzip android-ndk.zip -d /opt/android-sdk/ndk/
+          mv /opt/android-sdk/ndk/android-ndk-r25c /opt/android-sdk/ndk/25.2.9519653
+          
       - name: Install necessary SDK components
         run: |
           sdkmanager --sdk_root=$ANDROID_HOME --install \
