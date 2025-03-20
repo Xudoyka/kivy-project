@@ -76,8 +76,12 @@ jobs:
       - name: Verify Build-Tools Directory
         run: |
           if [ ! -d "/opt/android-sdk/build-tools/30.0.3" ]; then
-            mkdir -p /opt/android-sdk/build-tools/30.0.3
+            echo "build-tools katalogi yo‘q, qayta yuklanmoqda..."
+            sdkmanager --sdk_root=$ANDROID_HOME --install "build-tools;30.0.3"
           fi
+
+          echo "Yuklangan build-tools katalogi:"
+          ls -la /opt/android-sdk/build-tools/ || echo "build-tools hali mavjud emas!"
       - name: Debug:Check installed SDK components
         run: |
           echo "Existing build-tools:"
