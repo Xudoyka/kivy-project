@@ -28,32 +28,37 @@ jobs:
       - name: Buildozer keshini tozalash
         run: rm -rf ~/.buildozer/android
 
-      - name: Android SDK va NDK sozlash
+      - name: Android SDK va NDK ni yuklash
         run: |
-          # Android SDK yo‘llarini aniqlash
-          export ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk
-          export ANDROID_HOME=$HOME/.buildozer/android/platform/android-sdk
-          export ANDROID_NDK_HOME=$HOME/.buildozer/android/platform/android-ndk
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/tools:$PATH
+          # Android SDK katalogini yaratish
+          mkdir -p $HOME/android-sdk/cmdline-tools
+          
+          # Android SDK yuklash
+          wget -O $HOME/android-sdk/cmdline-tools.zip https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
+          
+          # Yuklangan faylni tekshirish
+          ls -lah $HOME/android-sdk/
+          
+          # Faylni ochish
+          unzip $HOME/android-sdk/cmdline-tools.zip -d $HOME/android-sdk/cmdline-tools/
+          
+          # Nomini to‘g‘rilash
+          mv $HOME/android-sdk/cmdline-tools/cmdline-tools $HOME/android-sdk/cmdline-tools/latest
 
-          # SDK uchun kerakli papkalarni yaratish
-          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
-          cd $ANDROID_SDK_ROOT/cmdline-tools
+          # SDK yo‘llarini sozlash
+          echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
+          echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
+          echo "ANDROID_NDK_HOME=$HOME/android-ndk" >> $GITHUB_ENV
+          echo "PATH=$HOME/android-sdk/cmdline-tools/latest/bin:$HOME/android-sdk/platform-tools:$HOME/android-sdk/tools:$PATH" >> $GITHUB_ENV
 
-          # Android cmdline-tools ni yuklab olish
-          wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
-          unzip cmdline-tools.zip
-          mv cmdline-tools latest
-
-          # SDK manager fayllarini tekshirish
-          ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest/bin
-
-          # SDK lisenziyalarini qabul qilish
-          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
+          # SDK manager orqali Android platformalarni yuklash
+          yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=$HOME/android-sdk --licenses
+          yes | $HOME/android-sdk/cmdline-tools/latest/bin/sdkmanager --sdk_root=$HOME/android-sdk "platforms;android-30" "build-tools;30.0.3" "ndk;25.2.9519653"
 
 
-      #- name: SDK licensiyalarini qabul qilish
-       # run: yes | $HOME/.buildozer/android/platform/android-sdk/latest/bin/sdkmanager --licenses
+
+      - name: SDK licensiyalarini qabul qilish
+        run: yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
 
       - name: Gradle-ni yuklab olish
         run: |
