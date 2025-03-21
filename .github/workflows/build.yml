@@ -51,8 +51,6 @@ jobs:
           # SDK lisenziyalarini qabul qilish
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
 
-
-
       #- name: SDK licensiyalarini qabul qilish
         #run: yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
 
