@@ -1,0 +1,70 @@
+name: Build Kivy App
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Repositoryni klonlash
+        uses: actions/checkout@v4
+
+      - name: 🐍 Pythonni o‘rnatish
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: 🛠️ Buildozer va zarur kutubxonalarni o‘rnatish
+        run: |
+          sudo apt update -y
+          sudo DEBIAN_FRONTEND=noninteractive apt install -y git zip unzip openjdk-17-jdk
+          pip install --upgrade pip
+          pip install buildozer cython virtualenv
+
+      - name: 🗑️ Buildozer keshini tozalash
+        run: rm -rf ~/.buildozer/android
+
+      - name: 📌 Android SDK va NDK ni sozlash
+        run: |
+          export ANDROID_SDK_ROOT=$HOME/android-sdk
+          export ANDROID_HOME=$ANDROID_SDK_ROOT
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
+
+          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
+          cd $ANDROID_SDK_ROOT/cmdline-tools
+
+          if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
+            echo "🔹 cmdline-tools mavjud emas, yuklab olinmoqda..."
+            wget https://dl.google.com/android/repository/commandlinetools-linux-10406996_latest.zip -O cmdline-tools.zip
+            unzip cmdline-tools.zip -d $ANDROID_SDK_ROOT/cmdline-tools
+            mv $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools $ANDROID_SDK_ROOT/cmdline-tools/latest
+          fi
+
+          echo "🔹 SDK manager orqali kerakli paketlar o‘rnatilmoqda..."
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+
+          echo "🔹 Android NDK yuklab olinmoqda..."
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "ndk;25.1.8937393"
+
+      - name: 🔧 Gradle-ni yuklab olish
+        run: |
+          wget https://services.gradle.org/distributions/gradle-7.3.3-bin.zip
+          mkdir -p $HOME/gradle
+          unzip -d $HOME/gradle gradle-7.3.3-bin.zip
+          echo "export PATH=$HOME/gradle/gradle-7.3.3/bin:$PATH" >> $GITHUB_ENV
+
+      - name: 🚀 Kivy ilovasini build qilish
+        run: |
+          export ANDROID_SDK_ROOT=$HOME/android-sdk
+          buildozer -v android debug
+
+      - name: 📤 APK faylni yuklash
+        uses: actions/upload-artifact@v4
+        with:
+          name: myapp-apk
+          path: bin/*.apk
