@@ -1,130 +1,41 @@
-name: Build Kivy APK
+name: Build Kivy App
 
 on:
   push:
     branches:
       - main
-  pull_request:
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v3
+      - name: Repositoryni klonlash
+        uses: actions/checkout@v4
 
-      - name: Set up Python
+      - name: Pythonni o‘rnatish
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
 
-      - name: Install dependencies
-        run: pip install python-for-android
-          sudo apt update
-          sudo apt install -y zip unzip openjdk-17-jdk python3-pip
-          python -m pip install --upgrade pip
-          pip install --upgrade Cython virtualenv setuptools buildozer
-          
-      - name: Create Android SDK directories
+      - name: Buildozer va zarur kutubxonalarni o‘rnatish
         run: |
-          sudo mkdir -p /opt/android-sdk/cmdline-tools
-          sudo mkdir -p /opt/android-sdk/platform-tools
-          sudo mkdir -p /opt/android-sdk/build-tools
-      - name: Install Android SDK Command Line Tools
-        run: |
-          cd /opt/android-sdk/cmdline-tools
-          sudo wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
-          sudo unzip commandlinetools-linux-9477386_latest.zip -d /opt/android-sdk/cmdline-tools
-          sudo mv /opt/android-sdk/cmdline-tools/cmdline-tools /opt/android-sdk/cmdline-tools/latest
-      - name: Set Android environment variables
-        run: |
-          echo "ANDROID_HOME=/opt/android-sdk" >> $GITHUB_ENV
-          echo "ANDROID_SDK_ROOT=/opt/android-sdk" >> $GITHUB_ENV
-          echo "ANDROID_NDK_HOME=/opt/android-sdk/ndk/25.2.9519653" >> $GITHUB_ENV
-          echo "/opt/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
-          echo "/opt/android-sdk/platform-tools" >> $GITHUB_PATH
+          sudo apt update -y
+          sudo apt install -y git zip unzip openjdk-17-jdk
+          pip install --upgrade pip
+          pip install buildozer cython virtualenv
 
-     
-          
-      - name: Verify SDKMANAGER installation
+      - name: Android SDK va NDK yo‘llarini sozlash
         run: |
-          which sdkmanager || echo "SDKMANAGER NOT FOUND!"
-          sdkmanager --list || echo "SDKMANAGER NOT WORKING!"
+          echo "ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk" >> $GITHUB_ENV
+          echo "ANDROID_NDK_HOME=$HOME/.buildozer/android/platform/android-ndk-r25c" >> $GITHUB_ENV
+          echo "PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/tools:$PATH" >> $GITHUB_ENV
 
-      - name: Download and Set Up NDK
-        run: |
-          wget https://dl.google.com/android/repository/android-ndk-r25c-linux.zip -O android-ndk.zip
-          unzip android-ndk.zip -d /opt/android-sdk/ndk/
-          mv /opt/android-sdk/ndk/android-ndk-r25c /opt/android-sdk/ndk/25.2.9519653
-          
-      - name: Clean old build files
-        run: |
-          rm -rf .buildozer
-          rm -rf ~/.buildozer
-          rm -rf ~/.local/share/python-for-android
-        
-      - name: Install necessary SDK components
-        run: |
-          sdkmanager --sdk_root=$ANDROID_HOME --install \
-            "platform-tools" "platforms;android-30" "build-tools;30.0.3" \
-            "cmdline-tools;latest" "system-images;android-30;google_apis;x86_64" \
-            "ndk;25.2.9519653" "aidl"
+      - name: Kivy ilovasini build qilish
+        run: buildozer -v android debug
 
-          # NDK so‘nggi versiyasini avtomatik o‘rnatish
-          sdkmanager --sdk_root=$ANDROID_HOME --list | grep "ndk;" || echo "NDK mavjud emas!"
-          sdkmanager --sdk_root=$ANDROID_HOME --install "ndk;25.2.9519653"
-
-          # AIDL va build-tools ni o‘rnatish
-          yes | sdkmanager --sdk_root=$ANDROID_HOME --install "build-tools;30.0.3"
-          yes | sdkmanager --sdk_root=$ANDROID_HOME --licenses
-
-          # SDK litsenziyalarini qabul qilish
-          yes | sdkmanager --sdk_root=$ANDROID_HOME --licenses
-
-      - name: Fix SDK XML Parsing Issues
-        run: |
-          yes | sdkmanager --sdk_root=$ANDROID_HOME --update
-          
-      - name: Verify Build-Tools Directory
-        run: |
-          if [ ! -d "/opt/android-sdk/build-tools/30.0.3" ]; then
-            echo "build-tools katalogi yo‘q, qayta yuklanmoqda..."
-            sdkmanager --sdk_root=$ANDROID_HOME --install "build-tools;30.0.3"
-          fi
-
-          echo "Yuklangan build-tools katalogi:"
-          ls -la /opt/android-sdk/build-tools/ || echo "build-tools hali mavjud emas!"
-      
-      - name: Debug:Check installed SDK components
-        run: |
-          echo "Existing build-tools:"
-          ls -la /opt/android-sdk/build-tools/ || echo "No build-tools found!"
-          sdkmanager --list || echo "SDK manager error!"
-      
-      - name: Final SDK Check
-        run: |
-          echo "SDK Installed Packages:"
-          sdkmanager --list
-      
-      - name: Initialize Buildozer
-        run: |
-          if [ ! -f "buildozer.spec" ]; then buildozer init; fi
-      
-      
-      
-      - name: Build APK
-        run: |
-          buildozer -v android debug 2>&1 | tee buildozer_log.txt
-        continue-on-error: true
-      
-      - name: Show Buildozer Log if Failed
-        if: failure()
-        run: cat buildozer_log.txt || echo "No buildozer log found!"
-      
-      - name: Upload APK
-        uses: actions/upload-artifact@v4
-        if: success()
+      - name: APK faylni saqlash
+        uses: actions/upload-artifact@v3
         with:
-          name: My-Android-App#Kivy-APK
-          path: bin/**/*.apk
+          name: myapp-apk
+          path: bin/*.apk
