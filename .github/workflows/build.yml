@@ -115,10 +115,8 @@ jobs:
       
       - name: Build APK
         run: |
-          cd kivy-project  # Ishchi katalogga o‘tish
-          buildozer android debug
-          #buildozer -v android debug 2>&1 | tee buildozer_log.txt
-        #continue-on-error: true
+          buildozer -v android debug 2>&1 | tee buildozer_log.txt
+        continue-on-error: true
       
       - name: Show Buildozer Log if Failed
         if: failure()
