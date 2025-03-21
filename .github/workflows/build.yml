@@ -28,7 +28,7 @@ jobs:
       - name: Buildozer keshini tozalash
         run: rm -rf ~/.buildozer/android
 
-            - name: Android SDK va NDK ni yuklash
+      - name: Android SDK va NDK ni yuklash
         run: |
           # Android SDK katalogini yaratish
           mkdir -p $HOME/android-sdk/cmdline-tools
