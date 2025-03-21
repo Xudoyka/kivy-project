@@ -44,8 +44,8 @@ jobs:
           unzip -o cmdline-tools.zip -d cmdline-tools
           
           # Agar `latest` papkasi mavjud bo‘lsa, faqat yangi fayllarni nusxalash
-          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
-          cp -r cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/
+         # mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
+          #cp -r cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/
 
           # SDK manager'ni tekshirish
           ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest/bin
