@@ -25,11 +25,28 @@ jobs:
           pip install --upgrade pip
           pip install buildozer cython virtualenv
 
-      - name: Android SDK va NDK yo‘llarini sozlash
+      - name: Buildozer keshini tozalash
+        run: rm -rf ~/.buildozer/android
+
+      - name: Android SDK va NDK ni yuklash va sozlash
         run: |
+          mkdir -p $HOME/.buildozer/android/platform
+          cd $HOME/.buildozer/android/platform
+          wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
+          unzip -d android-sdk commandlinetools-linux-9477386_latest.zip
+          yes | android-sdk/cmdline-tools/bin/sdkmanager --licenses
+          yes | android-sdk/cmdline-tools/bin/sdkmanager "platforms;android-30" "build-tools;30.0.3" "ndk;25.2.9519653"
+
           echo "ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk" >> $GITHUB_ENV
           echo "ANDROID_NDK_HOME=$HOME/.buildozer/android/platform/android-ndk-r25c" >> $GITHUB_ENV
           echo "PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/tools:$PATH" >> $GITHUB_ENV
+
+      - name: Gradle-ni yuklab olish
+        run: |
+          wget https://services.gradle.org/distributions/gradle-7.3.3-bin.zip
+          mkdir $HOME/gradle
+          unzip -d $HOME/gradle gradle-7.3.3-bin.zip
+          echo "PATH=$HOME/gradle/gradle-7.3.3/bin:$PATH" >> $GITHUB_ENV
 
       - name: Kivy ilovasini build qilish
         run: buildozer -v android debug
