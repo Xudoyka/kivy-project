@@ -30,15 +30,25 @@ jobs:
 
       - name: Android SDK va NDK sozlash
         run: |
+          # Android SDK o‘rnatish va sozlash
           export ANDROID_SDK_ROOT=$HOME/android-sdk
           export ANDROID_HOME=$HOME/android-sdk
           export ANDROID_NDK_HOME=$HOME/android-ndk
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/tools:$PATH
 
-          # SDK yo‘llarini tekshirish
+          # SDK uchun kerakli papkalarni yaratish
+          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
+          cd $ANDROID_SDK_ROOT/cmdline-tools
+
+          # Android cmdline-tools ni yuklab olish
+          wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
+          unzip cmdline-tools.zip
+          mv cmdline-tools latest
+
+          # SDK manager ni tekshirish
           ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest/bin
 
-          # Lisenziyalarni qabul qilish
+          # SDK lisenziyalarini qabul qilish
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
 
 
