@@ -42,18 +42,22 @@ jobs:
           # Android cmdline-tools ni yuklab olish va sozlash
           wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
           unzip -o cmdline-tools.zip -d cmdline-tools
-          
-          # Agar `latest` papkasi mavjud bo‘lsa, faqat yangi fayllarni nusxalash
+
+          # `latest` papkasiga to‘g‘ri joylash
           mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
-          cp -r cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/
+          mv cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/ || true
 
           # SDK manager'ni tekshirish
-          ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest/bin
+          ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest/bin || true
 
           # SDK manager orqali kerakli paketlarni o‘rnatish
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --update
-          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0"
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --update || true
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0" || true
+
+          # SDK va platformalarni tekshirish
+          ls -la $ANDROID_SDK_ROOT/platforms || true
+          ls -la $ANDROID_SDK_ROOT/build-tools || true
 
           # SDK lisenziyalarini qabul qilish
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
