@@ -33,9 +33,9 @@ jobs:
           # SDK root'ni belgilash
           export ANDROID_SDK_ROOT=$HOME/buildozer/android/platform/android-sdk
           export ANDROID_HOME=$ANDROID_SDK_ROOT
-          #export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
+          #export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/build-tools/36.0.0:$PATH
           #export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
-          export PATH=$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
+          export PATH=$ANDROID_SDK_ROOT/build-tools/36.0.0:$PATH
           
           # SDK uchun kerakli papkalarni yaratish
           mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
@@ -61,14 +61,14 @@ jobs:
           #$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0" || true
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
           #$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "build-tools;36.0.0" || true
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0" || true
-          #$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-34" "build-tools;36.0.0" "build-tools;36.0.0/aidl" || true
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0" || true
+          #$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-36" "build-tools;36.0.0" "build-tools;36.0.0/aidl" || true
 
           # Aidl yo‘lini qo‘shish
-          export PATH=$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
+          export PATH=$ANDROID_SDK_ROOT/build-tools/36.0.0:$PATH
           
           echo "🔹 Aidl mavjudligini tekshirish..."
-          ls -la $ANDROID_SDK_ROOT/build-tools/34.0.0/aidl || true
+          ls -la $ANDROID_SDK_ROOT/build-tools/36.0.0/aidl || true
 
           # Android NDK ni yuklab olish
           if [ ! -d "$ANDROID_SDK_ROOT/ndk/25.1.8937393" ]; then
