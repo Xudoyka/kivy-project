@@ -33,20 +33,27 @@ jobs:
           # SDK root'ni belgilash
           export ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk
           export ANDROID_HOME=$ANDROID_SDK_ROOT
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
-
+          #export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
+          
           # SDK uchun kerakli papkalarni yaratish
           mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
           cd $ANDROID_SDK_ROOT/cmdline-tools
 
           # Agar `cmdline-tools` mavjud bo‘lsa, uni yangilash
-          if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
-            echo "🔹 cmdline-tools mavjud emas, yuklab olinmoqda..."
-            wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
-            unzip -o cmdline-tools.zip -d cmdline-tools
-            mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
-            mv cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/ || true
-          fi
+          #if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
+            #echo "🔹 cmdline-tools mavjud emas, yuklab olinmoqda..."
+           # wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
+          #  unzip -o cmdline-tools.zip -d cmdline-tools
+           # mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
+          #  mv cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/ || true
+          #fi
+          # Android cmdline-tools ni yuklash va o‘rnatish
+          wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
+          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
+          unzip -o cmdline-tools.zip -d $ANDROID_SDK_ROOT/cmdline-tools
+          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
+          mv $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/ || true
 
           # SDK manager'ni tekshirish
           echo "🔹 SDK manager joylashuvi:"
@@ -72,7 +79,10 @@ jobs:
           ls -la $ANDROID_SDK_ROOT/build-tools || true
 
           # SDK lisenziyalarini qabul qilish
+          #yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --update || true
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0" || true
 
       #- name: SDK licensiyalarini qabul qilish
         #run: yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
