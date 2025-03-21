@@ -30,10 +30,10 @@ jobs:
 
       - name: Android SDK va NDK sozlash
         run: |
-          # Android SDK o‘rnatish va sozlash
-          export ANDROID_SDK_ROOT=$HOME/android-sdk
-          export ANDROID_HOME=$HOME/android-sdk
-          export ANDROID_NDK_HOME=$HOME/android-ndk
+          # Android SDK yo‘llarini aniqlash
+          export ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk
+          export ANDROID_HOME=$HOME/.buildozer/android/platform/android-sdk
+          export ANDROID_NDK_HOME=$HOME/.buildozer/android/platform/android-ndk
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/tools:$PATH
 
           # SDK uchun kerakli papkalarni yaratish
@@ -45,7 +45,7 @@ jobs:
           unzip cmdline-tools.zip
           mv cmdline-tools latest
 
-          # SDK manager ni tekshirish
+          # SDK manager fayllarini tekshirish
           ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest/bin
 
           # SDK lisenziyalarini qabul qilish
