@@ -28,25 +28,25 @@ jobs:
       - name: Buildozer keshini tozalash
         run: rm -rf ~/.buildozer/android
 
-      - name: Android SDK va NDK ni yuklash va sozlash
+      - name: Android SDK va NDK ni yuklash
         run: |
-          mkdir -p $HOME/.buildozer/android/platform
-          cd $HOME/.buildozer/android/platform
-
+          # Android SDK katalogini yaratish
+          mkdir -p $HOME/android-sdk/cmdline-tools
+          
           # Android SDK yuklash
           wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip
-          unzip -d android-sdk commandlinetools-linux-9477386_latest.zip
-          mv android-sdk/cmdline-tools android-sdk/latest
-          
-          # SDK muhit o‘zgaruvchilarini to‘g‘ri yo‘lga yo‘naltirish
-          echo "ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk" >> $GITHUB_ENV
-          echo "ANDROID_HOME=$HOME/.buildozer/android/platform/android-sdk" >> $GITHUB_ENV
-          echo "ANDROID_NDK_HOME=$HOME/.buildozer/android/platform/android-ndk-r25c" >> $GITHUB_ENV
-          echo "PATH=$ANDROID_SDK_ROOT/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/tools:$PATH" >> $GITHUB_ENV
+          unzip -d $HOME/android-sdk cmdline-tools-linux-9477386_latest.zip
+          mv $HOME/android-sdk/cmdline-tools $HOME/android-sdk/latest
 
-          # SDK manager yordamida API va build-tools yuklash
-          yes | android-sdk/latest/bin/sdkmanager --licenses
-          yes | android-sdk/latest/bin/sdkmanager "platforms;android-30" "build-tools;30.0.3" "ndk;25.2.9519653"
+          # Android SDK yo‘llarini sozlash
+          echo "ANDROID_SDK_ROOT=$HOME/android-sdk" >> $GITHUB_ENV
+          echo "ANDROID_HOME=$HOME/android-sdk" >> $GITHUB_ENV
+          echo "ANDROID_NDK_HOME=$HOME/android-ndk" >> $GITHUB_ENV
+          echo "PATH=$HOME/android-sdk/latest/bin:$HOME/android-sdk/platform-tools:$HOME/android-sdk/tools:$PATH" >> $GITHUB_ENV
+
+          # SDK manager orqali Android platformalarni yuklash
+          yes | $HOME/android-sdk/latest/bin/sdkmanager --sdk_root=$HOME/android-sdk --licenses
+          yes | $HOME/android-sdk/latest/bin/sdkmanager --sdk_root=$HOME/android-sdk "platforms;android-30" "build-tools;30.0.3" "ndk;25.2.9519653"
 
       - name: SDK licensiyalarini qabul qilish
         run: yes | $HOME/.buildozer/android/platform/android-sdk/latest/bin/sdkmanager --licenses
