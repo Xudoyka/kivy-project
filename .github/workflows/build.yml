@@ -40,7 +40,7 @@ jobs:
         run: |
           echo "ANDROID_HOME=/opt/android-sdk" >> $GITHUB_ENV
           echo "ANDROID_SDK_ROOT=/opt/android-sdk" >> $GITHUB_ENV
-          echo "ANDROID_NDK_HOME=/opt/android-sdk/ndk/23.2.8568313" >> $GITHUB_ENV
+          echo "ANDROID_NDK_HOME=/opt/android-sdk/ndk/25.2.9519653" >> $GITHUB_ENV
           echo "/opt/android-sdk/cmdline-tools/latest/bin" >> $GITHUB_PATH
           echo "/opt/android-sdk/platform-tools" >> $GITHUB_PATH
 
@@ -55,7 +55,7 @@ jobs:
         run: |
           wget https://dl.google.com/android/repository/android-ndk-r25c-linux.zip -O android-ndk.zip
           unzip android-ndk.zip -d /opt/android-sdk/ndk/
-          mv /opt/android-sdk/ndk/android-ndk-r23b /opt/android-sdk/ndk/23.2.8568313
+          mv /opt/android-sdk/ndk/android-ndk-r25c /opt/android-sdk/ndk/25.2.9519653
           
       - name: Clean old build files
         run: buildozer android clean
@@ -65,11 +65,11 @@ jobs:
           sdkmanager --sdk_root=$ANDROID_HOME --install \
             "platform-tools" "platforms;android-30" "build-tools;30.0.3" \
             "cmdline-tools;latest" "system-images;android-30;google_apis;x86_64" \
-            "ndk;23.2.8568313" "aidl"
+            "ndk;25.2.9519653" "aidl"
 
           # NDK so‘nggi versiyasini avtomatik o‘rnatish
           sdkmanager --sdk_root=$ANDROID_HOME --list | grep "ndk;" || echo "NDK mavjud emas!"
-          sdkmanager --sdk_root=$ANDROID_HOME --install "ndk;23.2.8568313"
+          sdkmanager --sdk_root=$ANDROID_HOME --install "ndk;25.2.9519653"
 
           # AIDL va build-tools ni o‘rnatish
           yes | sdkmanager --sdk_root=$ANDROID_HOME --install "build-tools;30.0.3"
