@@ -66,6 +66,9 @@ jobs:
 
           # Aidl yo‘lini qo‘shish
           export PATH=$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
+          
+          echo "🔹 Aidl mavjudligini tekshirish..."
+          ls -la $ANDROID_SDK_ROOT/build-tools/34.0.0/aidl || true
 
           # Android NDK ni yuklab olish
           if [ ! -d "$ANDROID_SDK_ROOT/ndk/25.1.8937393" ]; then
