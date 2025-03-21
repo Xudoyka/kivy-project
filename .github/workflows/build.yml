@@ -20,11 +20,12 @@ jobs:
           python-version: "3.10"
 
       - name: Install dependencies
-        run: |
+        run: pip install python-for-android
           sudo apt update
           sudo apt install -y zip unzip openjdk-17-jdk python3-pip
           python -m pip install --upgrade pip
           pip install --upgrade Cython virtualenv setuptools buildozer
+          
       - name: Create Android SDK directories
         run: |
           sudo mkdir -p /opt/android-sdk/cmdline-tools
@@ -58,7 +59,10 @@ jobs:
           mv /opt/android-sdk/ndk/android-ndk-r25c /opt/android-sdk/ndk/25.2.9519653
           
       - name: Clean old build files
-        run: buildozer android clean
+        run: |
+          rm -rf .buildozer
+          rm -rf ~/.buildozer
+          rm -rf ~/.local/share/python-for-android
         
       - name: Install necessary SDK components
         run: |
@@ -91,26 +95,30 @@ jobs:
 
           echo "Yuklangan build-tools katalogi:"
           ls -la /opt/android-sdk/build-tools/ || echo "build-tools hali mavjud emas!"
+      
       - name: Debug:Check installed SDK components
         run: |
           echo "Existing build-tools:"
           ls -la /opt/android-sdk/build-tools/ || echo "No build-tools found!"
           sdkmanager --list || echo "SDK manager error!"
+      
       - name: Final SDK Check
         run: |
           echo "SDK Installed Packages:"
           sdkmanager --list
+      
       - name: Initialize Buildozer
         run: |
           if [ ! -f "buildozer.spec" ]; then buildozer init; fi
-      - name: Clean old build files
-        run: |
-          rm -rf .buildozer bin ~/.gradle ~/.buildozer || true
-          buildozer android clean || true
+      
+      
+      
       - name: Build APK
         run: |
-          buildozer -v android debug 2>&1 | tee buildozer_log.txt
-        continue-on-error: true
+          cd kivy-project  # Ishchi katalogga o‘tish
+          buildozer android debug
+          #buildozer -v android debug 2>&1 | tee buildozer_log.txt
+        #continue-on-error: true
       
       - name: Show Buildozer Log if Failed
         if: failure()
