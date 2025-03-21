@@ -52,8 +52,8 @@ jobs:
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
 
 
-      - name: SDK licensiyalarini qabul qilish
-        run: yes | $HOME/.buildozer/android/platform/android-sdk/latest/bin/sdkmanager --licenses
+      #- name: SDK licensiyalarini qabul qilish
+       # run: yes | $HOME/.buildozer/android/platform/android-sdk/latest/bin/sdkmanager --licenses
 
       - name: Gradle-ni yuklab olish
         run: |
