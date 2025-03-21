@@ -41,10 +41,11 @@ jobs:
 
           # Android cmdline-tools ni yuklab olish va sozlash
           wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
-          unzip cmdline-tools.zip
-          mv cmdline-tools latest
-          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest/bin
-          mv latest/* $ANDROID_SDK_ROOT/cmdline-tools/latest/
+          unzip -o cmdline-tools.zip -d cmdline-tools
+          
+          # Agar `latest` papkasi mavjud bo‘lsa, faqat yangi fayllarni nusxalash
+          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
+          cp -r cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/
 
           # SDK manager'ni tekshirish
           ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest/bin
