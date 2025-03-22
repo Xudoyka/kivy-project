@@ -26,7 +26,7 @@ jobs:
           pip install buildozer cython virtualenv
 
       - name: Buildozer keshini tozalash
-        run: rm -rf ~/.buildozer/android
+        run: rm -rf ~/buildozer/android
 
       - name: ✅ Android SDK va NDK ni sozlash
         run: |
@@ -45,6 +45,13 @@ jobs:
           # Aidl mavjudligini tekshirish
           echo "🔹 Aidl mavjudligini tekshirish..."
           ls -la $ANDROID_SDK_ROOT/build-tools/34.0.0/aidl || true
+          ls -la $ANDROID_SDK_ROOT/build-tools/36.0.0/aidl || true
+
+          echo "🔹 Build-tools katalogida nima bor?"
+          ls -la $ANDROID_SDK_ROOT/build-tools
+          echo "🔹 34.0.0 versiyasidagi aidl:"
+          ls -la $ANDROID_SDK_ROOT/build-tools/34.0.0/aidl || true
+          echo "🔹 36.0.0 versiyasidagi aidl:"
           ls -la $ANDROID_SDK_ROOT/build-tools/36.0.0/aidl || true
 
           # Android NDK ni yuklab olish
