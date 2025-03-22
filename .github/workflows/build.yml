@@ -61,7 +61,6 @@ jobs:
           # SDK manager'ni tekshirish
           echo "🔹 SDK manager joylashuvi:"
           ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest/bin || true
-          
           - name: SDK lisenziyalarini qabul qilish
             run: yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
