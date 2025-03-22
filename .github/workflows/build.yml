@@ -52,8 +52,9 @@ jobs:
           fi
       
           # SDK manager orqali kerakli paketlarni o‘rnatishdan oldin lisenziyani qabul qilish
-          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
-          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          #yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          #yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          echo -e "y\ny\ny\ny\ny\ny\ny\ny\n" | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
       
           # Build-tools va aidl'ni qo‘lda yuklash
           echo "🔹 SDK manager orqali kerakli paketlar o‘rnatilmoqda..."
