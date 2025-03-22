@@ -38,6 +38,15 @@ jobs:
           # SDK uchun kerakli papkalarni yaratish
           mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
           cd $ANDROID_SDK_ROOT/cmdline-tools
+          
+          # Android SDK lisenziyalarini majburan qabul qilish
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
+
+          # Build-tools 34.0.0 va platform-tools ni yuklash
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" || true
+
+          # Aidl yo‘lini qo‘shish
+          #export PATH=$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
 
           # Agar `cmdline-tools` mavjud bo‘lsa, uni yangilash
           if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
