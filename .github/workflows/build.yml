@@ -34,80 +34,53 @@ jobs:
       - name: ✅ Android SDK va NDK ni sozlash
         run: |
           # SDK root'ni belgilash
-          export ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk
-          export ANDROID_HOME=$ANDROID_SDK_ROOT         
-          #export PATH=$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
-          export PATH=$ANDROID_SDK_ROOT/build-tools/36.0.0:$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
-          
+          export ANDROID_SDK_ROOT=$HOME/buildozer/android/platform/android-sdk
+          export ANDROID_HOME=$ANDROID_SDK_ROOT
+
+          # PATH to‘g‘rilash
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/build-tools/36.0.0:$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
+
           # SDK uchun kerakli papkalarni yaratish
-          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
+          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
           cd $ANDROID_SDK_ROOT/cmdline-tools
-        
 
-          # Build-tools 34.0.0 va platform-tools ni yuklash
-          #$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" || true
-
-          # Aidl yo‘lini qo‘shish
-          #export PATH=$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
-
-          # Agar `cmdline-tools` mavjud bo‘lsa, uni yangilash
-          if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
+          # Agar `cmdline-tools` mavjud bo‘lmasa, yuklash
+          if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin" ]; then
             echo "🔹 cmdline-tools mavjud emas, yuklab olinmoqda..."
             wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
-            unzip -o cmdline-tools.zip -d cmdline-tools
-            mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
-            mv cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/ || true
+            unzip -o cmdline-tools.zip -d $ANDROID_SDK_ROOT/cmdline-tools
+            mv $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools $ANDROID_SDK_ROOT/cmdline-tools/latest
           fi
-          # SDK manager orqali kerakli paketlarni o‘rnatishdan oldin lisenziyani qabul qilish
-          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
-          # SDK manager'ni tekshirish
-          #echo "🔹 SDK manager joylashuvi:"
-          #ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest/bin || true
-          
-          #yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          # SDK manager'ni to‘g‘ri joylashganligini tekshirish
+          if [ ! -f "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" ]; then
+            mv $ANDROID_SDK_ROOT/cmdline-tools/latest/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/ || true
+          fi
 
-          # SDK manager orqali kerakli paketlarni o‘rnatish
-          echo "🔹 SDK manager orqali kerakli paketlar o‘rnatilmoqda..."
-          #$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --update || true
-          #yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true          
-          #$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0" || true
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "build-tools;36.0.0" "build-tools;36.0.0/aidl" || true
-          #$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;36.0.0" || true
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --update || true
+          # SDK manager orqali kerakli paketlarni yuklash
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "build-tools;36.0.0"
 
-          # `aidl` yo‘q bo‘lsa, o‘zimiz tekshirib, yuklab olamiz
-          echo "🔹 Aidl mavjudligini tekshirish..."
+          # Aidl mavjudligini tekshirish
           if [ ! -f "$ANDROID_SDK_ROOT/build-tools/36.0.0/aidl" ]; then
             echo "🔹 Aidl topilmadi, qaytadan yuklab olinmoqda..."
-            $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "build-tools;36.0.0" || true
+            $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "build-tools;36.0.0"
           fi
-          
-          # Aidl yo‘lini qo‘shish
-          #export PATH=$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
-          export PATH=$ANDROID_SDK_ROOT/build-tools/36.0.0:$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
-          
-          echo "🔹 Aidl mavjudligini tekshirish..."
-          ls -la $ANDROID_SDK_ROOT/build-tools/36.0.0/aidl || true
 
           # Android NDK ni yuklab olish
-          if [ ! -d "$ANDROID_SDK_ROOT/ndk/25.1.8937393" ]; then
-            echo "🔹 Android NDK mavjud emas, yuklab olinmoqda..."
-            $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "ndk;25.1.8937393" || true
+          if [ -d "$ANDROID_SDK_ROOT/ndk/25.1.8937393" ]; then
+            export ANDROID_NDK_HOME=$ANDROID_SDK_ROOT/ndk/25.1.8937393
+          else
+            echo "🔹 Android NDK yuklanmoqda..."
+            $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "ndk;25.1.8937393"
           fi
 
-          # SDK va platformalarni tekshirish
+          # SDK va build-tools'ni tekshirish
           echo "🔹 SDK platformalar:"
           ls -la $ANDROID_SDK_ROOT/platforms || true
 
           echo "🔹 SDK build tools:"
           ls -la $ANDROID_SDK_ROOT/build-tools || true
-          # SDK lisenziyalarini qabul qilish
-          #yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
-        
-
-      #- name: SDK licensiyalarini qabul qilish
-        #run: yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
 
       - name: Gradle-ni yuklab olish
         run: |
