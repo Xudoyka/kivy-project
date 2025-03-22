@@ -36,7 +36,8 @@ jobs:
           # SDK root'ni belgilash
           export ANDROID_SDK_ROOT=$HOME/buildozer/android/platform/android-sdk
           export ANDROID_HOME=$ANDROID_SDK_ROOT         
-          export PATH=$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
+          #export PATH=$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
+          export PATH=$ANDROID_SDK_ROOT/build-tools/36.0.0:$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
           
           # SDK uchun kerakli papkalarni yaratish
           mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
