@@ -65,7 +65,7 @@ jobs:
           # SDK manager orqali kerakli paketlarni o‘rnatish
           echo "🔹 SDK manager orqali kerakli paketlar o‘rnatilmoqda..."        
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true          
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-36" "build-tools;34.0.0" || true
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0" || true
           
 
           # Aidl yo‘lini qo‘shish
