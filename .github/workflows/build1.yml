@@ -55,17 +55,21 @@ jobs:
             mv cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/ || true
           fi
 
-          # SDK litsenziyalarini avtomatik qabul qilish
-          echo "✅ SDK litsenziyalari qabul qilinmoqda..."
+          # **SDK litsenziyalarini qabul qilish (1-marta)**
+          echo "✅ SDK litsenziyalari qabul qilinmoqda (1-bosqich)..."
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
-          # **Build-Tools 36.0.0 ni to‘liq o‘chiramiz**
+          # **Build-Tools 36.0.0 ni butunlay o‘chiramiz**
           echo "🗑️ Build-Tools 36.0.0 ni o‘chiramiz..."
           rm -rf $ANDROID_SDK_ROOT/build-tools/36.0.0 || true
           
-          # Faqat kerakli versiyalarni o‘rnatamiz
+          # **Kerakli build-tools versiyalarini o‘rnatamiz**
           echo "🔹 Build-tools va platformalarni yuklash..."
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;33.0.0" "ndk;25.1.8937393" || true
+
+          # **SDK litsenziyalarini qabul qilish (2-marta)**
+          echo "✅ SDK litsenziyalari qabul qilinmoqda (2-bosqich)..."
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
           # Yuklab olingan build-tools kataloglarini tekshirish
           echo "🔹 Build-tools katalogida nima bor?"
