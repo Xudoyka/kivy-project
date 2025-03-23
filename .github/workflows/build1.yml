@@ -27,6 +27,9 @@ jobs:
 
       - name: 🗑 Buildozer keshini tozalash
         run: rm -rf ~/.buildozer/android
+      - name: 🔄 Buildozer-ni tozalash
+        run: |
+          buildozer android clean
 
       - name: ✅ Android SDK va NDK ni sozlash
         run: |
