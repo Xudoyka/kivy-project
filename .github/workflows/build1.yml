@@ -1,4 +1,4 @@
-name: Build Kivy App
+name: Build Kivy APK
 
 on:
   push:
@@ -13,7 +13,7 @@ jobs:
       - name: 📥 Repositoryni klonlash
         uses: actions/checkout@v4
 
-      - name: 🐍 Pythonni o‘rnatish
+      - name: 🐍 Python va zarur kutubxonalarni o‘rnatish
         uses: actions/setup-python@v4
         with:
           python-version: "3.10"
@@ -25,52 +25,55 @@ jobs:
           pip install --upgrade pip
           pip install buildozer cython virtualenv
 
-      - name: 🗑️ Buildozer keshini tozalash
+      - name: 🗑 Buildozer keshini tozalash
         run: rm -rf ~/.buildozer/android
 
       - name: ✅ Android SDK va NDK ni sozlash
         run: |
           export ANDROID_SDK_ROOT=$HOME/buildozer/android/platform/android-sdk
           export ANDROID_HOME=$ANDROID_SDK_ROOT
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/build-tools/33.0.0:$PATH
 
           # SDK uchun kerakli papkalarni yaratish
           mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
           cd $ANDROID_SDK_ROOT/cmdline-tools
 
-          # Agar `cmdline-tools` mavjud bo‘lmasa, yuklash
+          # Agar `cmdline-tools` mavjud bo‘lmasa, uni yuklash
           if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
-            echo "🔹 cmdline-tools yuklab olinmoqda..."
+            echo "🔹 cmdline-tools yuklanmoqda..."
             wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
             unzip -o cmdline-tools.zip -d cmdline-tools
             mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
             mv cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/ || true
           fi
 
-          # SDK litsenziyalarini qabul qilish
-          echo "🔹 SDK litsenziyalarini qabul qilinmoqda..."
+          # SDK litsenziyalarini avtomatik qabul qilish
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
-          # SDK manager orqali kerakli paketlarni o‘rnatish
-          echo "🔹 SDK manager orqali paketlar o‘rnatilmoqda..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "platform-tools" "platforms;android-34" "build-tools;34.0.0" "ndk;25.1.8937393" || true
+          # Eski build-tools versiyalarini o‘chirish
+          rm -rf $ANDROID_SDK_ROOT/build-tools/36.0.0 || true
+          rm -rf $ANDROID_SDK_ROOT/build-tools/34.0.0 || true
 
-          # SDK va platformalarni tekshirish
-          echo "🔹 SDK build tools:"
-          ls -la $ANDROID_SDK_ROOT/build-tools || true
+          # To‘g‘ri build-tools versiyasini yuklash
+          echo "🔹 Build-tools va platformalarni yuklash..."
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;33.0.0" "ndk;25.1.8937393" || true
 
-      - name: 🔄 Gradle-ni yuklab olish
+          # `aidl` mavjudligini tekshirish
+          echo "🔹 Aidl mavjudligini tekshirish..."
+          ls -la $ANDROID_SDK_ROOT/build-tools/33.0.0/aidl || true
+
+      - name: 📦 Gradle-ni yuklash
         run: |
           wget https://services.gradle.org/distributions/gradle-7.3.3-bin.zip
           mkdir $HOME/gradle
           unzip -d $HOME/gradle gradle-7.3.3-bin.zip
           echo "PATH=$HOME/gradle/gradle-7.3.3/bin:$PATH" >> $GITHUB_ENV
 
-      - name: 📱 Kivy ilovasini build qilish
+      - name: 🚀 Kivy ilovasini build qilish
         run: buildozer -v android debug
 
       - name: 📤 APK faylni saqlash
         uses: actions/upload-artifact@v4
         with:
-          name: myapp-apk
+          name: kivy-app-apk
           path: bin/*.apk
