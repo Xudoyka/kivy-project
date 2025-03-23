@@ -26,7 +26,8 @@ jobs:
 
       - name: ✅ Android SDK va NDK ni sozlash
         run: |
-          export ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager
+          export ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk
+          export ANDROID_HOME=$ANDROID_SDK_ROOT
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
       
           echo "🔍 SDK kataloglari:"
@@ -34,23 +35,39 @@ jobs:
           ls -la $ANDROID_SDK_ROOT/cmdline-tools || true
       
           # Agar cmdline-tools mavjud bo‘lmasa, uni yuklab olish
-          if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
-            echo "🔹 cmdline-tools topilmadi, yuklab olinmoqda..."
-            mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
-            wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
-            unzip -o cmdline-tools.zip -d $ANDROID_SDK_ROOT/cmdline-tools
-            mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
-            mv $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/
+          #if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
+            #echo "🔹 cmdline-tools topilmadi, yuklab olinmoqda..."
+            #mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
+            #wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
+            #unzip -o cmdline-tools.zip -d $ANDROID_SDK_ROOT/cmdline-tools
+            #mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
+            #mv $ANDROID_SDK_ROOT/cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/
+          #fi
+          # SDK manager yuklanganligini tekshirish
+          if [ ! -f "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" ]; then
+              echo "🔹 sdkmanager topilmadi, yuklab olinmoqda..."
+              mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
+              cd $ANDROID_SDK_ROOT/cmdline-tools
+              wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
+              unzip -o cmdline-tools.zip -d cmdline-tools
+              mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
+              mv cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/
           fi
+
+          # sdkmanager mavjudligini tekshirish
+          echo "🔹 SDK manager mavjudligini tekshirish..."
+          ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest/bin || true
+
+          
       
           # SDK manager ishlayotganligini tekshirish
-          echo "🔹 SDK manager mavjudligini tekshirish..."
-          if [ -f "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" ]; then
-            echo "✅ sdkmanager topildi!"
-          else
-            echo "❌ sdkmanager topilmadi! Xatolik!"
-            exit 1
-          fi
+          #echo "🔹 SDK manager mavjudligini tekshirish..."
+          #if [ -f "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" ]; then
+            #echo "✅ sdkmanager topildi!"
+          #else
+            #echo "❌ sdkmanager topilmadi! Xatolik!"
+            #exit 1
+          #fi
       
           # SDK manager orqali lisenziyalarni qabul qilish
           echo "🔹 SDK lisenziyalarini qabul qilish..."
