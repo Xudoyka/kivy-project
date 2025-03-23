@@ -34,11 +34,10 @@ jobs:
           export ANDROID_HOME=$ANDROID_SDK_ROOT
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/build-tools/33.0.0:$PATH
 
-          # Eski keshlarni tozalash
           echo "🗑️ Eski Buildozer keshini tozalaymiz..."
           rm -rf ~/.buildozer/android || true
+          rm -rf $ANDROID_SDK_ROOT/build-tools/36.0.0 || true
 
-          # SDK kataloglarini yaratish
           mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
           mkdir -p $ANDROID_SDK_ROOT/build-tools
           mkdir -p $ANDROID_SDK_ROOT/platforms
@@ -46,7 +45,6 @@ jobs:
 
           cd $ANDROID_SDK_ROOT/cmdline-tools
 
-          # `cmdline-tools` mavjudligini tekshirish
           if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
             echo "🔹 cmdline-tools yuklanmoqda..."
             wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
@@ -55,27 +53,21 @@ jobs:
             mv cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/ || true
           fi
 
-          # **SDK litsenziyalarini qabul qilish (1-marta)**
-          echo "✅ SDK litsenziyalari qabul qilinmoqda (1-bosqich)..."
+          echo "✅ SDK litsenziyalari qabul qilinmoqda..."
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
-          # **Build-Tools 36.0.0 ni butunlay o‘chiramiz**
           echo "🗑️ Build-Tools 36.0.0 ni o‘chiramiz..."
           rm -rf $ANDROID_SDK_ROOT/build-tools/36.0.0 || true
-          
-          # **Kerakli build-tools versiyalarini o‘rnatamiz**
-          echo "🔹 Build-tools va platformalarni yuklash..."
+
+          echo "🔹 Kerakli SDK versiyalarini yuklash..."
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;33.0.0" "ndk;25.1.8937393" || true
 
-          # **SDK litsenziyalarini qabul qilish (2-marta)**
-          echo "✅ SDK litsenziyalari qabul qilinmoqda (2-bosqich)..."
+          echo "✅ SDK litsenziyalari qabul qilinmoqda (yakuniy bosqich)..."
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
-          # Yuklab olingan build-tools kataloglarini tekshirish
           echo "🔹 Build-tools katalogida nima bor?"
           ls -la $ANDROID_SDK_ROOT/build-tools || true
 
-          # `aidl` mavjudligini tekshirish
           echo "🔹 Aidl mavjudligini tekshirish..."
           ls -la $ANDROID_SDK_ROOT/build-tools/33.0.0/aidl || true
 
