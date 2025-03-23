@@ -34,11 +34,15 @@ jobs:
           export ANDROID_HOME=$ANDROID_SDK_ROOT
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/build-tools/33.0.0:$PATH
 
-          # SDK uchun kerakli papkalarni yaratish
+          # SDK kataloglarini yaratish
           mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
+          mkdir -p $ANDROID_SDK_ROOT/build-tools
+          mkdir -p $ANDROID_SDK_ROOT/platforms
+          mkdir -p $ANDROID_SDK_ROOT/ndk
+
           cd $ANDROID_SDK_ROOT/cmdline-tools
 
-          # Agar `cmdline-tools` mavjud bo‘lmasa, uni yuklash
+          # `cmdline-tools` mavjudligini tekshirish
           if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
             echo "🔹 cmdline-tools yuklanmoqda..."
             wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
@@ -54,9 +58,13 @@ jobs:
           rm -rf $ANDROID_SDK_ROOT/build-tools/36.0.0 || true
           rm -rf $ANDROID_SDK_ROOT/build-tools/34.0.0 || true
 
-          # To‘g‘ri build-tools versiyasini yuklash
+          # Build-tools va NDK ni yuklash
           echo "🔹 Build-tools va platformalarni yuklash..."
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;33.0.0" "ndk;25.1.8937393" || true
+
+          # Yuklab olingan build-tools kataloglarini tekshirish
+          echo "🔹 Build-tools katalogida nima bor?"
+          ls -la $ANDROID_SDK_ROOT/build-tools || true
 
           # `aidl` mavjudligini tekshirish
           echo "🔹 Aidl mavjudligini tekshirish..."
