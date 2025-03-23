@@ -34,9 +34,9 @@ jobs:
       - name: ✅ Android SDK va NDK ni sozlash
         run: |
           # SDK root'ni belgilash
-          export ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk
+          export ANDROID_SDK_ROOT=$HOME/buildozer/android/platform/android-sdk
           export ANDROID_HOME=$ANDROID_SDK_ROOT         
-          export PATH=$ANDROID_SDK_ROOT/build-tools/36.0.0:$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
+          export PATH=$ANDROID_SDK_ROOT/build-tools/33.0.0:$ANDROID_SDK_ROOT/build-tools/34.0.0:$PATH
       
           # SDK uchun kerakli papkalarni yaratish
           mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
@@ -58,15 +58,15 @@ jobs:
       
           # Build-tools va aidl'ni qo‘lda yuklash
           echo "🔹 SDK manager orqali kerakli paketlar o‘rnatilmoqda..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;36.0.0" || true
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "build-tools;36.0.0" "platform-tools" "platforms;android-34" || true
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;33.0.0" || true
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "build-tools;33.0.0" "platform-tools" "platforms;android-34" || true
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --update || true
       
           # `aidl` yo‘q bo‘lsa, o‘zimiz tekshirib, yuklab olamiz
           echo "🔹 Aidl mavjudligini tekshirish..."
           if [ ! -f "$ANDROID_SDK_ROOT/build-tools/36.0.0/aidl" ]; then
             echo "🔹 Aidl topilmadi, qaytadan yuklab olinmoqda..."
-            $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "build-tools;36.0.0" || true
+            $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "build-tools;33.0.0" || true
           fi
       
           # Android NDK ni yuklab olish
@@ -83,7 +83,7 @@ jobs:
           ls -la $ANDROID_SDK_ROOT/build-tools || true
       
           echo "🔹 Aidl fayli:"
-          ls -la $ANDROID_SDK_ROOT/build-tools/36.0.0/aidl || true
+          ls -la $ANDROID_SDK_ROOT/build-tools/33.0.0/aidl || true
 
 
       - name: Gradle-ni yuklab olish
