@@ -44,7 +44,7 @@ jobs:
           echo "🔹 Build-Tools va NDK ni qayta yuklayapmiz..."
           rm -rf $ANDROID_SDK_ROOT/build-tools/33.0.0 || true
           rm -rf $ANDROID_SDK_ROOT/ndk/25.1.8937393 || true
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "build-tools;33.0.0" "platforms;android-33" "ndk;25.1.8937393" || true
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "build-tools;33.0.0" "platforms;android-34" "ndk;25.1.8937393" || true
       
           echo "✅ SDK litsenziyalari yana bir bor qabul qilinmoqda..."
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
