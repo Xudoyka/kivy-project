@@ -34,6 +34,10 @@ jobs:
           export ANDROID_HOME=$ANDROID_SDK_ROOT
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$ANDROID_SDK_ROOT/build-tools/33.0.0:$PATH
 
+          # Eski keshlarni tozalash
+          echo "🗑️ Eski Buildozer keshini tozalaymiz..."
+          rm -rf ~/.buildozer/android || true
+
           # SDK kataloglarini yaratish
           mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
           mkdir -p $ANDROID_SDK_ROOT/build-tools
@@ -52,13 +56,14 @@ jobs:
           fi
 
           # SDK litsenziyalarini avtomatik qabul qilish
+          echo "✅ SDK litsenziyalari qabul qilinmoqda..."
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
-          # Eski build-tools versiyalarini o‘chirish
+          # **Build-Tools 36.0.0 ni to‘liq o‘chiramiz**
+          echo "🗑️ Build-Tools 36.0.0 ni o‘chiramiz..."
           rm -rf $ANDROID_SDK_ROOT/build-tools/36.0.0 || true
-          rm -rf $ANDROID_SDK_ROOT/build-tools/34.0.0 || true
-
-          # Build-tools va NDK ni yuklash
+          
+          # Faqat kerakli versiyalarni o‘rnatamiz
           echo "🔹 Build-tools va platformalarni yuklash..."
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-34" "build-tools;33.0.0" "ndk;25.1.8937393" || true
 
