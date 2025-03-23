@@ -26,43 +26,50 @@ jobs:
           pip install buildozer cython virtualenv
 
       - name: Buildozer keshini tozalash
-        run: rm -rf ~/buildozer/android
+        run: rm -rf ~/.buildozer/android
 
       - name: ✅ Android SDK va NDK ni sozlash
         run: |
           export ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk
           export ANDROID_HOME=$ANDROID_SDK_ROOT
-          export PATH=$ANDROID_SDK_ROOT/build-tools/34.0.0:$ANDROID_SDK_ROOT/build-tools/36.0.0:$PATH
-          export CMDLINE_TOOLS=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager
+          export PATH=$ANDROID_SDK_ROOT/build-tools/36.0.0:$PATH
 
-          # SDK lisenziyalarini majburan qabul qilish
-          yes | $CMDLINE_TOOLS --licenses || true
+          mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
+          cd $ANDROID_SDK_ROOT/cmdline-tools
 
-          # Build-tools 34.0.0 va platform-tools ni yuklash
-          $CMDLINE_TOOLS --install "platform-tools" "platforms;android-34" "build-tools;34.0.0" "build-tools;36.0.0" || true
-          $CMDLINE_TOOLS --update || true
+          if [ ! -d "$ANDROID_SDK_ROOT/cmdline-tools/latest" ]; then
+            echo "🔹 cmdline-tools mavjud emas, yuklab olinmoqda..."
+            wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
+            unzip -o cmdline-tools.zip -d cmdline-tools
+            mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
+            mv cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/ || true
+          fi
 
-          # Aidl mavjudligini tekshirish
+          echo "🔹 SDK manager orqali kerakli paketlar o‘rnatilmoqda..."
+          echo -e "y\ny\ny\ny\ny\ny\ny\ny\n" | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
+
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-36" "build-tools;36.0.0" || true
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --update || true
+
           echo "🔹 Aidl mavjudligini tekshirish..."
-          ls -la $ANDROID_SDK_ROOT/build-tools/34.0.0/aidl || true
-          ls -la $ANDROID_SDK_ROOT/build-tools/36.0.0/aidl || true
+          if [ ! -f "$ANDROID_SDK_ROOT/build-tools/36.0.0/aidl" ]; then
+            echo "🔹 Aidl topilmadi, qaytadan yuklab olinmoqda..."
+            $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "build-tools;36.0.0" || true
+          fi
 
-          echo "🔹 Build-tools katalogida nima bor?"
-          ls -la $ANDROID_SDK_ROOT/build-tools
-          echo "🔹 34.0.0 versiyasidagi aidl:"
-          ls -la $ANDROID_SDK_ROOT/build-tools/34.0.0/aidl || true
-          echo "🔹 36.0.0 versiyasidagi aidl:"
-          ls -la $ANDROID_SDK_ROOT/build-tools/36.0.0/aidl || true
+          if [ ! -d "$ANDROID_SDK_ROOT/ndk/25.1.8937393" ]; then
+            echo "🔹 Android NDK mavjud emas, yuklab olinmoqda..."
+            $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager "ndk;25.1.8937393" || true
+          fi
 
-          # Android NDK ni yuklab olish
-          $CMDLINE_TOOLS --install "ndk;25.1.8937393" || true
-
-          # SDK va platformalarni tekshirish
           echo "🔹 SDK platformalar:"
           ls -la $ANDROID_SDK_ROOT/platforms || true
 
           echo "🔹 SDK build tools:"
           ls -la $ANDROID_SDK_ROOT/build-tools || true
+
+          echo "🔹 Aidl fayli:"
+          ls -la $ANDROID_SDK_ROOT/build-tools/36.0.0/aidl || true
 
       - name: Gradle-ni yuklab olish
         run: |
