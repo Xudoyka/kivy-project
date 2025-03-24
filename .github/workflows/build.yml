@@ -46,7 +46,7 @@ jobs:
               echo "❌ sdkmanager topilmadi! Yuklab olinmoqda..."
               mkdir -p $ANDROID_SDK_ROOT/tools
               cd $ANDROID_SDK_ROOT/tools
-              wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O tools.zip
+              wget https://dl.google.com/android/repository/tools-linux-9477386_latest.zip -O tools.zip
               unzip -o tools.zip -d tools
               mkdir -p $ANDROID_SDK_ROOT/tools/latest
               mv tools/tools/* $ANDROID_SDK_ROOT/tools/latest/
