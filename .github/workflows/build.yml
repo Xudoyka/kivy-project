@@ -24,6 +24,15 @@ jobs:
           sudo apt install -y python3 python3-pip zip unzip openjdk-17-jdk
           pip install --upgrade buildozer cython virtualenv
 
+      - name: 🔄 Buildozer SDK keshini tozalash
+        run: |
+          rm -rf ~/.buildozer/android/platform/android-sdk/tools
+          rm -rf ~/.buildozer/android/platform/android-sdk/cmdline-tools
+          rm -rf ~/.buildozer/android/platform/android-sdk/build-tools
+          rm -rf ~/.buildozer/android/platform/android-sdk/platform-tools
+          rm -rf ~/.buildozer/.cache
+          buildozer android clean
+
       - name: ✅ Android SDK va NDK ni sozlash
         run: |
           # ✅ Android SDK ROOT sozlash
