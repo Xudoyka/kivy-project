@@ -15,7 +15,7 @@ log_level = 2
 [android]
 android.sdk = 33
 android.build_tools = 33.0.0
-android.api = 34
+android.api = 33
 android.minapi = 21
 android.ndk = 25b
 android.ndk_path = $HOME/.buildozer/android/platform/android-ndk-r25b
