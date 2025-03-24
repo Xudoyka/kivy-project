@@ -24,14 +24,6 @@ jobs:
           sudo apt install -y python3 python3-pip zip unzip openjdk-17-jdk
           pip install --upgrade buildozer cython virtualenv
 
-      - name: 🔄 Buildozer SDK keshini tozalash
-        run: |
-          rm -rf ~/.buildozer/android/platform/android-sdk/tools
-          rm -rf ~/.buildozer/android/platform/android-sdk/cmdline-tools
-          rm -rf ~/.buildozer/android/platform/android-sdk/build-tools
-          rm -rf ~/.buildozer/android/platform/android-sdk/platform-tools
-          rm -rf ~/.buildozer/.cache
-          buildozer android clean
 
       - name: ✅ Android SDK va NDK ni sozlash
         run: |
@@ -40,38 +32,38 @@ jobs:
           #export ANDROID_HOME=$ANDROID_SDK_ROOT
           #export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
           export ANDROID_SDK_ROOT=/home/runner/.buildozer/android/platform/android-sdk
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
+          export PATH=$ANDROID_SDK_ROOT/tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
           
           # 🔍 SDK kataloglarini tekshirish
           echo "🔍 SDK kataloglari mavjudligini tekshirish:"
           ls -la $ANDROID_SDK_ROOT || true
-          ls -la $ANDROID_SDK_ROOT/cmdline-tools || true
-          ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest || true
-          ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest/bin || true
+          ls -la $ANDROID_SDK_ROOT/tools || true
+          ls -la $ANDROID_SDK_ROOT/tools/latest || true
+          ls -la $ANDROID_SDK_ROOT/tools/latest/bin || true
           
           # 🔹 SDK manager yuklanganligini tekshirish
-          if [ ! -f "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" ]; then
+          if [ ! -f "$ANDROID_SDK_ROOT/tools/latest/bin/sdkmanager" ]; then
               echo "❌ sdkmanager topilmadi! Yuklab olinmoqda..."
               mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
-              cd $ANDROID_SDK_ROOT/cmdline-tools
+              cd $ANDROID_SDK_ROOT/tools
               wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
-              unzip -o cmdline-tools.zip -d cmdline-tools
-              mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
-              mv cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/
+              unzip -o tools.zip -d tools
+              mkdir -p $ANDROID_SDK_ROOT/tools/latest
+              mv cmdline-tools/tools/* $ANDROID_SDK_ROOT/tools/latest/
               echo "✅ sdkmanager o‘rnatildi!"
           fi
           
           # 🔹 SDK manager mavjudligini yana tekshirish
           echo "🔹 SDK manager katalogi:"
-          ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest/bin || true
+          ls -la $ANDROID_SDK_ROOT/tools/latest/bin || true
       
           # SDK manager orqali lisenziyalarni qabul qilish
           echo "🔹 SDK lisenziyalarini qabul qilish..."
-          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          yes | $ANDROID_SDK_ROOT/tools/latest/bin/sdkmanager --licenses || true
       
           # SDK manager orqali build-tools yuklash
           echo "🔹 build-tools yuklanmoqda..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0" || true
+          $ANDROID_SDK_ROOT/tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0" || true
 
       - name: 📦 Gradle-ni yuklash
         run: |
