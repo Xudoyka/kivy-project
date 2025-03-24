@@ -27,7 +27,7 @@ jobs:
       - name: ✅ Android SDK va NDK ni sozlash
         run: |
           # ✅ Android SDK ROOT sozlash
-          export ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk
+          export ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk/tools/bin
           export ANDROID_HOME=$ANDROID_SDK_ROOT
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
           
