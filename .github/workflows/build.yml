@@ -44,12 +44,12 @@ jobs:
           # 🔹 SDK manager yuklanganligini tekshirish
           if [ ! -f "$ANDROID_SDK_ROOT/tools/latest/bin/sdkmanager" ]; then
               echo "❌ sdkmanager topilmadi! Yuklab olinmoqda..."
-              mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
+              mkdir -p $ANDROID_SDK_ROOT/tools
               cd $ANDROID_SDK_ROOT/tools
               wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
               unzip -o tools.zip -d tools
               mkdir -p $ANDROID_SDK_ROOT/tools/latest
-              mv cmdline-tools/tools/* $ANDROID_SDK_ROOT/tools/latest/
+              mv tools/tools/* $ANDROID_SDK_ROOT/tools/latest/
               echo "✅ sdkmanager o‘rnatildi!"
           fi
           
