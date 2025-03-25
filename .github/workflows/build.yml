@@ -18,7 +18,26 @@ jobs:
           sudo apt install -y python3-pip
           pip3 install --upgrade pip
           pip3 install buildozer cython virtualenv
-      
+
+      - name: 🔍 Buildozer SDK yo‘lini tekshirish va sozlash
+        run: |
+          SDK_PATH="/home/runner/.buildozer/android/platform/android-sdk"
+
+          echo "🔍 Buildozer SDK yo‘lini tekshirish..."
+          
+          if grep -q "android.sdk_path" buildozer.spec; then
+              echo "✅ Buildozer SDK yo‘li buildozer.spec ichida mavjud:"
+              grep "android.sdk_path" buildozer.spec
+          else
+              echo "❌ android.sdk_path topilmadi! Uni qo‘shamiz..."
+              echo "android.sdk_path = $SDK_PATH" >> buildozer.spec
+          fi
+
+          sed -i "s|android.sdk_path = .*|android.sdk_path = $SDK_PATH|g" buildozer.spec
+          
+          echo "✅ Buildozer SDK yo‘li yangilandi:"
+          grep "android.sdk_path" buildozer.spec
+
       - name: ✅ Android SDK va NDK ni sozlash
         run: |
           export ANDROID_SDK_ROOT=/home/runner/.buildozer/android/platform/android-sdk
@@ -50,8 +69,7 @@ jobs:
 
           # SDK manager orqali lisenziyalarni qabul qilish
           echo "🔹 SDK lisenziyalarini qabul qilish..."
-          #yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
-          yes | /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
+          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
           # SDK manager orqali build-tools yuklash
           echo "🔹 build-tools yuklanmoqda..."
@@ -59,6 +77,7 @@ jobs:
 
       - name: 🔍 SDK manager katalogini tekshirish
         run: ls -la /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin 
+
       - name: 🔍 Buildozer’ning SDK yo‘lini tekshirish
         run: cat ~/.buildozer/android/platform/android-sdk
       
