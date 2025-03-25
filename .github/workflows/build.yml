@@ -32,7 +32,7 @@ jobs:
           #export ANDROID_HOME=$ANDROID_SDK_ROOT
           #export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
           export ANDROID_SDK_ROOT=/home/runner/.buildozer/android/platform/android-sdk
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-cmdline-tools:$PATH
           
           # 🔍 SDK kataloglarini tekshirish
           echo "🔍 SDK kataloglari mavjudligini tekshirish:"
