@@ -50,11 +50,15 @@ jobs:
 
           # SDK manager orqali lisenziyalarni qabul qilish
           echo "🔹 SDK lisenziyalarini qabul qilish..."
-          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          #yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
+          yes | /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin/sdkmanager --licenses
 
           # SDK manager orqali build-tools yuklash
           echo "🔹 build-tools yuklanmoqda..."
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0" || true
+
+      - name: 🔍 SDK manager katalogini tekshirish
+        run: ls -la /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin 
       
       - name: 📦 Buildozer bilan APK yaratish
         run: |
