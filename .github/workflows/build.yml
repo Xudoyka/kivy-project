@@ -47,7 +47,7 @@ jobs:
               mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
               cd $ANDROID_SDK_ROOT/cmdline-tools
               wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
-              unzip -o tools.zip -d tools
+              unzip -o cmdline-tools.zip -d cmdline-tools
               mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
               mv cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/tools/latest/
               echo "✅ sdkmanager o‘rnatildi!"
