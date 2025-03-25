@@ -63,7 +63,7 @@ jobs:
       
           # SDK manager orqali build-tools yuklash
           echo "🔹 build-tools yuklanmoqda..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0" || true
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-cmdline-tools" "platforms;android-33" "build-tools;33.0.0" || true
 
       - name: 📦 Gradle-ni yuklash
         run: |
