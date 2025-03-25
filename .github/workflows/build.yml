@@ -59,6 +59,8 @@ jobs:
 
       - name: 🔍 SDK manager katalogini tekshirish
         run: ls -la /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin 
+      - name: 🔍 Buildozer’ning SDK yo‘lini tekshirish
+        run: cat ~/.buildozer/android/platform/android-sdk
       
       - name: 📦 Buildozer bilan APK yaratish
         run: |
