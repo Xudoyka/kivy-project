@@ -1,0 +1,84 @@
+name: Build Kivy APK
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Repositoryni klonlash
+        uses: actions/checkout@v4
+
+      - name: 🐍 Python va zarur kutubxonalarni o‘rnatish
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: 📦 Python va Buildozer o‘rnatish
+        run: |
+          sudo apt update
+          sudo apt install -y python3 python3-pip zip unzip openjdk-17-jdk
+          pip install --upgrade buildozer cython virtualenv
+
+
+      - name: ✅ Android SDK va NDK ni sozlash
+        run: |
+          # ✅ Android SDK ROOT sozlash
+          #export ANDROID_SDK_ROOT=$HOME/.buildozer/android/platform/android-sdk
+          #export ANDROID_HOME=$ANDROID_SDK_ROOT
+          #export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
+          export ANDROID_SDK_ROOT=/home/runner/.buildozer/android/platform/android-sdk
+          export PATH=$ANDROID_SDK_ROOT/tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
+          
+          # 🔍 SDK kataloglarini tekshirish
+          echo "🔍 SDK kataloglari mavjudligini tekshirish:"
+          ls -la $ANDROID_SDK_ROOT || true
+          ls -la $ANDROID_SDK_ROOT/tools || true
+          ls -la $ANDROID_SDK_ROOT/tools/latest || true
+          ls -la $ANDROID_SDK_ROOT/tools/latest/bin || true
+          
+          # 🔹 SDK manager yuklanganligini tekshirish
+          if [ ! -f "$ANDROID_SDK_ROOT/tools/latest/bin/sdkmanager" ]; then
+              echo "❌ sdkmanager topilmadi! Yuklab olinmoqda..."
+              mkdir -p $ANDROID_SDK_ROOT/tools
+              cd $ANDROID_SDK_ROOT/tools
+              wget https://dl.google.com/android/repository/tools-linux-9477386_latest.zip -O tools.zip
+              unzip -o tools.zip -d tools
+              mkdir -p $ANDROID_SDK_ROOT/tools/latest
+              mv tools/tools/* $ANDROID_SDK_ROOT/tools/latest/
+              echo "✅ sdkmanager o‘rnatildi!"
+          fi
+          
+          # 🔹 SDK manager mavjudligini yana tekshirish
+          echo "🔹 SDK manager katalogi:"
+          ls -la $ANDROID_SDK_ROOT/tools/latest/bin || true
+      
+          # SDK manager orqali lisenziyalarni qabul qilish
+          echo "🔹 SDK lisenziyalarini qabul qilish..."
+          yes | $ANDROID_SDK_ROOT/tools/latest/bin/sdkmanager --licenses || true
+      
+          # SDK manager orqali build-tools yuklash
+          echo "🔹 build-tools yuklanmoqda..."
+          $ANDROID_SDK_ROOT/tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0" || true
+
+      - name: 📦 Gradle-ni yuklash
+        run: |
+          wget https://services.gradle.org/distributions/gradle-7.3.3-bin.zip
+          mkdir $HOME/gradle
+          unzip -d $HOME/gradle gradle-7.3.3-bin.zip
+          echo "PATH=$HOME/gradle/gradle-7.3.3/bin:$PATH" >> $GITHUB_ENV
+
+      - name: 🚀 Kivy ilovasini build qilish
+        run: |
+          pip install --upgrade buildozer cython
+          buildozer android debug
+
+      - name: 📤 APK faylni saqlash
+        uses: actions/upload-artifact@v4
+        with:
+          name: kivy-app-apk
+          path: bin/*.apk
