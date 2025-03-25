@@ -32,7 +32,7 @@ jobs:
           #export ANDROID_HOME=$ANDROID_SDK_ROOT
           #export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH
           export ANDROID_SDK_ROOT=/home/runner/.buildozer/android/platform/android-sdk
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-cmdline-tools:$PATH
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
           
           # 🔍 SDK kataloglarini tekshirish
           echo "🔍 SDK kataloglari mavjudligini tekshirish:"
@@ -63,7 +63,7 @@ jobs:
       
           # SDK manager orqali build-tools yuklash
           echo "🔹 build-tools yuklanmoqda..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-cmdline-tools" "platforms;android-33" "build-tools;33.0.0" || true
+          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0" || true
 
       - name: 📦 Gradle-ni yuklash
         run: |
