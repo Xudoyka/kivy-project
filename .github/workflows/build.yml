@@ -68,9 +68,10 @@ jobs:
               mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
               mv cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/
               echo "✅ sdkmanager o‘rnatildi!"
+              which sdkmanager || echo "❌ sdkmanager topilmadi!"
               
           fi
-          which sdkmanager || echo "❌ sdkmanager topilmadi!"
+          
           # PATH ni yangilash
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --version
