@@ -45,6 +45,7 @@ jobs:
           export ANDROID_SDK_ROOT=/home/runner/.buildozer/android/platform/android-sdk
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
           echo "✅ PATH sozlandi: $PATH"
+          which sdkmanager || echo "❌ sdkmanager topilmadi!"
 
           # 🔍 SDK kataloglarini tekshirish
           echo "🔍 SDK kataloglari mavjudligini tekshirish:"
@@ -64,7 +65,7 @@ jobs:
               mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
               mv cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/
               echo "✅ sdkmanager o‘rnatildi!"
-              which sdkmanager || echo "❌ sdkmanager topilmadi!"
+              
           fi
 
           # 🔹 SDK manager mavjudligini yana tekshirish
