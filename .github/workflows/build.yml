@@ -73,7 +73,7 @@ jobs:
           fi
           
           # PATH ni yangilash
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
+          
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --version
           # 🔹 SDK manager mavjudligini yana tekshirish
           echo "🔹 SDK manager katalogi:"
@@ -86,7 +86,7 @@ jobs:
           # SDK manager orqali build-tools yuklash
           echo "🔹 build-tools yuklanmoqda..."
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0" || true
-
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
       - name: 🔍 SDK manager katalogini tekshirish
         run: ls -la /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin 
 
