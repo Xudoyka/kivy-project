@@ -51,6 +51,8 @@ jobs:
           ls -la $ANDROID_SDK_ROOT/cmdline-tools || true
           ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest || true
           ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest/bin || true
+          # Eskirgan kataloglarni tozalash
+          rm -rf $ANDROID_SDK_ROOT/cmdline-tools
 
           # 🔹 SDK manager yuklanganligini tekshirish
           if [ ! -f "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" ]; then
