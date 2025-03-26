@@ -20,10 +20,11 @@ jobs:
           sudo apt update -y
           sudo apt install -y python3-pip
           pip3 install --upgrade pip setuptools wheel
-          pip3 install buildozer==1.5.0
+          pip3 install buildozer==1.5.1+
           pip3 install cython==0.29.36
           pip3 install virtualenv
           pip3 install python-for-android==2024.1.21
+      
 
       - name: 🧹 Buildozer keshini tozalash
         run: |
@@ -51,8 +52,7 @@ jobs:
           ls -la $ANDROID_SDK_ROOT/cmdline-tools || true
           ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest || true
           ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest/bin || true
-          # Eskirgan kataloglarni tozalash
-          rm -rf $ANDROID_SDK_ROOT/cmdline-tools
+         
 
           # 🔹 SDK manager yuklanganligini tekshirish
           if [ ! -f "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" ]; then
@@ -62,8 +62,9 @@ jobs:
               wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
               unzip -o cmdline-tools.zip -d cmdline-tools
               mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
-              mv cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/
+              mv cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/
               echo "✅ sdkmanager o‘rnatildi!"
+              which sdkmanager || echo "❌ sdkmanager topilmadi!"
           fi
 
           # 🔹 SDK manager mavjudligini yana tekshirish
