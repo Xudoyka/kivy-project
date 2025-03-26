@@ -42,10 +42,10 @@ jobs:
 
       - name: ✅ Android SDK va NDK ni sozlash
         run: |
-          export ANDROID_SDK_ROOT=/home/runner/.buildozer/android/platform/android-sdk
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
+          export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/7.0/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
           echo "✅ PATH sozlandi: $PATH"
-          #which sdkmanager || echo "❌ sdkmanager topilmadi!"
+          which sdkmanager || echo "❌ sdkmanager topilmadi!"
           
 
           # 🔍 SDK kataloglarini tekshirish
