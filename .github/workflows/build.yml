@@ -23,6 +23,7 @@ jobs:
         run: |
           SDK_PATH="/home/runner/.buildozer/android/platform/android-sdk"
           
+          # buildozer.spec faylida yo‘lni tekshirish
           if grep -q "android.sdk_path" buildozer.spec; then
               echo "✅ Buildozer SDK yo‘li buildozer.spec ichida mavjud:"
               grep "android.sdk_path" buildozer.spec
@@ -31,6 +32,7 @@ jobs:
               echo "android.sdk_path = $SDK_PATH" >> buildozer.spec
           fi
       
+          # Eskisini yangilash
           sed -i "s|android.sdk_path = .*|android.sdk_path = $SDK_PATH|g" buildozer.spec
       
           echo "✅ Buildozer SDK yo‘li yangilandi:"
@@ -80,8 +82,7 @@ jobs:
         run: ls -la ~/.buildozer/android/platform/android-sdk
       
       - name: 📦 Buildozer bilan APK yaratish
-        run: |
-          buildozer -v android debug
+        run: buildozer -v android debug
 
       - name: 📤 APK faylni saqlash
         uses: actions/upload-artifact@v4
