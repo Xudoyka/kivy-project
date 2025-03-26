@@ -82,10 +82,14 @@ jobs:
       - name: 🔍 Buildozer’ning SDK yo‘lini tekshirish
         run: ls -la ~/.buildozer/android/platform/android-sdk
 
+      - name: 🔍 Buildozer versiyasini tekshirish
+        run: |
+          buildozer --version
+
       - name: 🧹 Buildozer’ni tozalash va qayta qurish
         run: |
           #buildozer android clean
-          buildozer android debug
+          buildozer -v android debug
 
       - name: 📤 APK faylni saqlash
         uses: actions/upload-artifact@v4
