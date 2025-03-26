@@ -23,7 +23,7 @@ jobs:
           pip3 install buildozer==1.5.0
           pip3 install cython==0.29.36
           pip3 install virtualenv
-          pip3 install python-for-android==2024.03.09
+          pip3 install python-for-android==2024.1.21
 
       - name: 🧹 Buildozer keshini tozalash
         run: |
