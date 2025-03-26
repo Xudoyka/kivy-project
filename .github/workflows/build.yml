@@ -19,8 +19,11 @@ jobs:
         run: |
           sudo apt update -y
           sudo apt install -y python3-pip
-          pip3 install --upgrade pip
-          pip3 install --upgrade buildozer cython virtualenv
+          pip3 install --upgrade pip setuptools wheel
+          pip3 install buildozer==1.5.0
+          pip3 install cython==0.29.36
+          pip3 install virtualenv
+          pip3 install python-for-android==2024.03.09
 
       - name: 🧹 Buildozer keshini tozalash
         run: |
@@ -32,30 +35,20 @@ jobs:
           rm -rf ~/.buildozer/cache
           rm -rf .buildozer
 
+      - name: 📂 python-for-android katalogini yaratish
+        run: |
+          mkdir -p /home/runner/.buildozer/android/platform/python-for-android
+
       - name: ✅ Android SDK va NDK ni sozlash
         run: |
           export ANDROID_SDK_ROOT=/home/runner/.buildozer/android/platform/android-sdk
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
           echo "✅ PATH sozlandi: $PATH"
 
-          # 🔍 SDK manager mavjudligini tekshirish
-          if [ ! -f "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" ]; then
-              echo "❌ sdkmanager topilmadi! Yuklab olinmoqda..."
-              mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
-              cd $ANDROID_SDK_ROOT/cmdline-tools
-              wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
-              unzip -o cmdline-tools.zip -d cmdline-tools
-              mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
-              mv cmdline-tools/cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/
-              echo "✅ sdkmanager o‘rnatildi!"
-          fi
-
-          # 🔹 SDK manager orqali lisenziyalarni qabul qilish
-          echo "🔹 SDK lisenziyalarini qabul qilish..."
+          # SDK manager orqali lisenziyalarni qabul qilish
           yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
 
           # SDK manager orqali build-tools yuklash
-          echo "🔹 build-tools yuklanmoqda..."
           $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0" || true
 
       - name: 🔍 SDK manager katalogini tekshirish
@@ -64,7 +57,7 @@ jobs:
       - name: 🔍 Buildozer’ning SDK yo‘lini tekshirish
         run: ls -la ~/.buildozer/android/platform/android-sdk
 
-      - name: 🔄 Buildozer bilan qayta qurish
+      - name: 🧹 Buildozer’ni tozalash va qayta qurish
         run: |
           buildozer android clean
           buildozer android debug
