@@ -12,6 +12,9 @@ jobs:
       - name: ✅ Repositoryni yuklab olish
         uses: actions/checkout@v4
 
+      - name: ✅ Android SDK'ni o'rnatish
+        uses: android-actions/setup-android@v2
+
       - name: 🛠️ Python va Buildozer’ni o‘rnatish
         run: |
           sudo apt update -y
