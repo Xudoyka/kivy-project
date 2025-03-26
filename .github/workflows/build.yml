@@ -42,53 +42,57 @@ jobs:
 
       - name: ✅ Android SDK va NDK ni sozlash
         run: |
+          # ✅ SDK Root katalogini belgilash
           export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
           export PATH=$ANDROID_SDK_ROOT/cmdline-tools/7.0/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
           echo "✅ PATH sozlandi: $PATH"
+      
+          # 🔍 SDK manager mavjudligini tekshirish
           which sdkmanager || echo "❌ sdkmanager topilmadi!"
-          
-
+          sdkmanager --version || echo "❌ sdkmanager versiyasi topilmadi!"
+      
           # 🔍 SDK kataloglarini tekshirish
-          echo "🔍 SDK kataloglari mavjudligini tekshirish:"
+          echo "🔍 SDK kataloglari:"
           ls -la $ANDROID_SDK_ROOT || true
           ls -la $ANDROID_SDK_ROOT/cmdline-tools || true
-          ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest || true
-          ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest/bin || true
-         
-
+          ls -la $ANDROID_SDK_ROOT/cmdline-tools/7.0/bin || true
+      
           # 🔹 SDK manager yuklanganligini tekshirish
-          if [ ! -f "$ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager" ]; then
+          if [ ! -f "$ANDROID_SDK_ROOT/cmdline-tools/7.0/bin/sdkmanager" ]; then
               echo "❌ sdkmanager topilmadi! Yuklab olinmoqda..."
+              
               mkdir -p $ANDROID_SDK_ROOT/cmdline-tools
               cd $ANDROID_SDK_ROOT/cmdline-tools
+      
               # Eskirgan versiyani o‘chirish (agar mavjud bo‘lsa)
-              rm -rf latest
+              rm -rf 7.0
               wget https://dl.google.com/android/repository/commandlinetools-linux-9477386_latest.zip -O cmdline-tools.zip
-              unzip -o cmdline-tools.zip -d cmdline-tools
-              mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/latest
-              mv cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/latest/
+              unzip -o cmdline-tools.zip
+              mkdir -p $ANDROID_SDK_ROOT/cmdline-tools/7.0
+              mv cmdline-tools/* $ANDROID_SDK_ROOT/cmdline-tools/7.0/
+      
               echo "✅ sdkmanager o‘rnatildi!"
-              which sdkmanager || echo "❌ sdkmanager topilmadi!"
-              
           fi
-          
-          # PATH ni yangilash
-          
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --version
+      
+          # 🔹 PATH ni yangilash
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/7.0/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
+          echo "✅ Yangilangan PATH: $PATH"
+      
           # 🔹 SDK manager mavjudligini yana tekshirish
           echo "🔹 SDK manager katalogi:"
-          ls -la $ANDROID_SDK_ROOT/cmdline-tools/latest/bin || true
-
-          # SDK manager orqali lisenziyalarni qabul qilish
+          ls -la $ANDROID_SDK_ROOT/cmdline-tools/7.0/bin || true
+          which sdkmanager || echo "❌ sdkmanager topilmadi!"
+          sdkmanager --version || echo "❌ sdkmanager versiyasi topilmadi!"
+      
+          # 🔹 SDK lisenziyalarini qabul qilish
           echo "🔹 SDK lisenziyalarini qabul qilish..."
-          yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses || true
-
-          # SDK manager orqali build-tools yuklash
+          yes | sdkmanager --licenses || true
+      
+          # 🔹 SDK build-tools yuklash
           echo "🔹 build-tools yuklanmoqda..."
-          $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0" || true
-          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
-      - name: 🔍 SDK manager katalogini tekshirish
-        run: ls -la /home/runner/.buildozer/android/platform/android-sdk/cmdline-tools/latest/bin 
+          sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0" || true
+          
+      
 
       - name: 🔍 Buildozer’ning SDK yo‘lini tekshirish
         run: ls -la ~/.buildozer/android/platform/android-sdk
