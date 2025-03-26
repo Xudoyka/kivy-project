@@ -17,7 +17,6 @@ jobs:
 
       - name: 🛠️ Python va Buildozer’ni o‘rnatish
         run: |
-          buildozer android clean
           sudo apt update -y
           sudo apt install -y python3-pip
           pip3 install --upgrade pip setuptools wheel
