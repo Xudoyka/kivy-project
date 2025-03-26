@@ -94,8 +94,8 @@ jobs:
           
       
 
-      - name: 🔍 Buildozer’ning SDK yo‘lini tekshirish
-        run: ls -la ~/.buildozer/android/platform/android-sdk
+      - name: 🔍 Buildozer SDK yo‘lini tekshirish
+        run: ls -la /usr/local/lib/android/sdk
 
       - name: 🔍 Buildozer versiyasini tekshirish
         run: |
