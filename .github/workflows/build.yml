@@ -20,8 +20,10 @@ jobs:
           sudo apt update -y
           sudo apt install -y python3-pip
           pip3 install --upgrade pip
-          pip3 install buildozer cython virtualenv
-
+          pip3 install --upgrade buildozer cython virtualenv  # 🔹 Buildozer yangilangan versiyasini o‘rnatish
+          # 🔹 Buildozer'ni toza muhitda ishga tushirish
+          rm -rf ~/.buildozer
+    
       #- name: 🔍 Buildozer SDK yo‘lini tekshirish va sozlash
         #run: |
           #SDK_PATH="/home/runner/.buildozer/android/platform/android-sdk"
