@@ -91,6 +91,7 @@ jobs:
           # 🔹 SDK build-tools yuklash
           echo "🔹 build-tools yuklanmoqda..."
           sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0" || true
+          ls -la $ANDROID_SDK_ROOT/build-tools || true
           
       
 
