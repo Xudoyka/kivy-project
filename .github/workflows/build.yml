@@ -47,11 +47,6 @@ jobs:
           rm -rf ~/.buildozer/cache
           rm -rf .buildozer
 
-      - name: 🔄 Buildozer bilan qayta qurish
-        run: |
-          buildozer android clean
-          buildozer android debug
-
       - name: ✅ Android SDK va NDK ni sozlash
         run: |
           export ANDROID_SDK_ROOT=/home/runner/.buildozer/android/platform/android-sdk
@@ -95,8 +90,12 @@ jobs:
       - name: 🔍 Buildozer’ning SDK yo‘lini tekshirish
         run: ls -la ~/.buildozer/android/platform/android-sdk
       
-      - name: 📦 Buildozer bilan APK yaratish
-        run: buildozer -v android debug
+      #- name: 📦 Buildozer bilan APK yaratish
+        #run: buildozer -v android debug
+      - name: 🔄 Buildozer bilan qayta qurish
+        run: |
+          buildozer android clean
+          buildozer android debug
 
       - name: 📤 APK faylni saqlash
         uses: actions/upload-artifact@v4
