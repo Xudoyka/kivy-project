@@ -89,11 +89,16 @@ jobs:
           yes | sdkmanager --licenses || true
       
           # 🔹 SDK build-tools yuklash
-          echo "🔹 build-tools yuklanmoqda..."
-          sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0" || true
-          ls -la $ANDROID_SDK_ROOT/build-tools || true
+          #echo "🔹 build-tools yuklanmoqda..."
+          #sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0" || true
+          #ls -la $ANDROID_SDK_ROOT/build-tools || true
           
-      
+      - name: 🛠 Build-tools’ni o‘rnatish
+        run: |
+          export ANDROID_SDK_ROOT=/usr/local/lib/android/sdk
+          export PATH=$ANDROID_SDK_ROOT/cmdline-tools/7.0/bin:$ANDROID_SDK_ROOT/platform-tools:$PATH
+          yes | sdkmanager --licenses || true
+          sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0"
 
       - name: 🔍 Buildozer SDK yo‘lini tekshirish
         run: ls -la /usr/local/lib/android/sdk
