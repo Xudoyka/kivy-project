@@ -114,9 +114,9 @@ jobs:
 
       - name: 🔍 Buildozer SDK yo‘lini tekshirish
         run: ls -la /usr/local/lib/android/sdk
-            echo "🔹 aidl ni "
-            ls -la /usr/local/lib/android/sdk/build-tools/34.0.0/aidl
 
+      - name: 🔍 aidlni tekshirish
+        run: ls -la /usr/local/lib/android/sdk/build-tools/36.0.0/aidl
      
 
       - name: 🔍 Buildozer versiyasini tekshirish
