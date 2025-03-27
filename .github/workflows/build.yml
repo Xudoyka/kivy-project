@@ -98,8 +98,9 @@ jobs:
 
       - name: 🛠 Build-tools’ni o‘rnatish
         run: |
+          echo "🔹 build-tools yuklanmoqda..."
           yes | sdkmanager --licenses || true
-          sdkmanager --install "platform-tools" "platforms;android-33" "build-tools;33.0.0"
+          sdkmanager --install "build-tools;36.0.0"  # ⬅️ Buildozer yangi versiya ishlatishi uchun
 
       - name: 🔍 Yangi build-tools katalogini tekshirish
         run: ls -la $ANDROID_SDK_ROOT/build-tools || true
