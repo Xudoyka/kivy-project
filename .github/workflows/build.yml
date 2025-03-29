@@ -157,8 +157,8 @@ jobs:
 
       - name: ✅ aidl fayliga bajarish ruxsatlarini berish
         run: |
-          chmod +x /usr/local/lib/android/sdk/build-tools/36.0.0/aidl
-          chmod +x /usr/bin/aidl
+          sudo chmod +x /usr/local/lib/android/sdk/build-tools/36.0.0/aidl
+          sudo chmod +x /usr/bin/aidl
           ls -la /usr/bin/aidl
 
       #- name: 🔍 Buildozer xatolarini tekshirish
