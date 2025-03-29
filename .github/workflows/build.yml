@@ -144,10 +144,10 @@ jobs:
           mkdir -p ~/.buildozer/android/platform/android-sdk/build-tools
           ln -sf $ANDROID_SDK_ROOT/build-tools/36.0.0 ~/.buildozer/android/platform/android-sdk/build-tools/36.0.0
 
-      - name: 🧹 Buildozer’ni tozalash va qayta qurish
-        run: |
-          rm -rf ~/.buildozer
-          buildozer -v android debug
+      #- name: 🧹 Buildozer’ni tozalash va qayta qurish
+        #run: |
+          #rm -rf ~/.buildozer
+          #buildozer -v android debug
 
       - name: 📤 APK faylni saqlash
         uses: actions/upload-artifact@v4
