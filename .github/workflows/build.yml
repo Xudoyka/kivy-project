@@ -123,18 +123,17 @@ jobs:
         run: |
           buildozer --version
 
-      - name: 🔗 Aidl uchun to‘g‘ri yo‘lni o‘rnatish
+      - name: 🔗 Buildozer uchun aidl yo‘lini sozlash
         run: |
-          mkdir -p /home/runner/.buildozer/android/platform/android-sdk/build-tools
-          ln -sf /usr/local/lib/android/sdk/build-tools/36.0.0 /home/runner/.buildozer/android/platform/android-sdk/build-tools/36.0.0
-          ls -la /home/runner/.buildozer/android/platform/android-sdk/build-tools || true
-          ls -la /home/runner/.buildozer/android/platform/android-sdk/build-tools/36.0.0 || true
+          mkdir -p ~/.buildozer/android/platform/android-sdk/build-tools
+          ln -sf $ANDROID_SDK_ROOT/build-tools/36.0.0 ~/.buildozer/android/platform/android-sdk/build-tools/36.0.0
+          ls -la ~/.buildozer/android/platform/android-sdk/build-tools/36.0.0
 
-      - name: 🔗 aidl uchun yo‘lni to‘g‘ri sozlash
+      - name: 🔗 ANDROID_SDK yo‘llarini sozlash
         run: |
-          echo "PATH=$ANDROID_SDK_ROOT/build-tools/36.0.0:$PATH" >> $GITHUB_ENV
           echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
           echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
+          echo "PATH=$ANDROID_SDK_ROOT/build-tools/36.0.0:$PATH" >> $GITHUB_ENV
           echo "PATH=$ANDROID_SDK_ROOT/platform-tools:$PATH" >> $GITHUB_ENV
           echo "PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH" >> $GITHUB_ENV
 
