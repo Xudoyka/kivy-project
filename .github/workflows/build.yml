@@ -155,6 +155,12 @@ jobs:
           sudo ln -sf /usr/local/lib/android/sdk/build-tools/36.0.0/aidl /usr/bin/aidl
           ls -la /usr/bin/aidl
 
+      - name: ✅ aidl fayliga bajarish ruxsatlarini berish
+        run: |
+          chmod +x /usr/local/lib/android/sdk/build-tools/36.0.0/aidl
+          chmod +x /usr/bin/aidl
+          ls -la /usr/bin/aidl
+
       #- name: 🔍 Buildozer xatolarini tekshirish
         #run: cat .buildozer/android/platform/build.log || true
       #- name: 🔍 Buildozer kataloglarini tekshirish
@@ -176,10 +182,16 @@ jobs:
             exit 1
           fi
 
-      - name: 🔍 Buildozer batafsil loglarni chiqarish
+      - name: 🛠 aidl ishga tushishini tekshirish
         run: |
-          buildozer -v android debug > buildozer_log.txt 2>&1
-          cat buildozer_log.txt
+          /usr/local/lib/android/sdk/build-tools/36.0.0/aidl --help || echo "❌ aidl ishlamadi!"
+      - name: 🛠 Buildozer debug rejimida ishga tushirish
+        run: |
+          buildozer --verbose android debug
+      #- name: 🔍 Buildozer batafsil loglarni chiqarish
+        #run: |
+          #buildozer -v android debug > buildozer_log.txt 2>&1
+          #cat buildozer_log.txt
       
       #- name: 🧹 Buildozer’ni tozalash va qayta qurish
         #run: |
