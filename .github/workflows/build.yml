@@ -130,8 +130,8 @@ jobs:
       - name: 🔗 Buildozer uchun aidl yo‘lini sozlash
         run: |
           mkdir -p ~/.buildozer/android/platform/android-sdk/build-tools
-          ln -sf $ANDROID_SDK_ROOT/build-tools/36.0.0 ~/.buildozer/android/platform/android-sdk/build-tools/36.0.0
-          ls -la ~/.buildozer/android/platform/android-sdk/build-tools/36.0.0
+          ln -sf /usr/local/lib/android/sdk/build-tools/36.0.0/aidl /usr/bin/aidl
+          chmod +x /usr/bin/aidl
 
       - name: 🔗 ANDROID_SDK yo‘llarini sozlash
         run: |
