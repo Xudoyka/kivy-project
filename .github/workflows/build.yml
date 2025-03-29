@@ -154,6 +154,12 @@ jobs:
         #with:
           #name: kivy-app-apk
           #path: bin/*.apk
+      - name: 🔧 Buildozer yo‘lini tekshirish
+        run: |
+          echo "Home directory: $HOME"
+          echo "Current working directory: $(pwd)"
+          ls -la
+                
       - name: 📤 APK faylini yuklash
         uses: actions/upload-artifact@v4
         with:
