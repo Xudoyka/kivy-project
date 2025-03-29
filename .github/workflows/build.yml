@@ -133,6 +133,12 @@ jobs:
       - name: 🔍 aidl mavjudligini tekshirish
         run: ls -la /home/runner/.buildozer/android/platform/android-sdk/build-tools/36.0.0
 
+      - name: ✅ Android SDK litsenziyalarini qabul qilish
+        run: yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
+
+      - name: 🔍 Build-Tools katalogini tekshirish
+        run: ls -la $ANDROID_SDK_ROOT/build-tools
+
       - name: 🧹 Buildozer’ni tozalash va qayta qurish
         run: |
           rm -rf ~/.buildozer
