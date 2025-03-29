@@ -117,6 +117,10 @@ jobs:
 
       - name: 🔍 aidlni tekshirish
         run: ls -la /usr/local/lib/android/sdk/build-tools/36.0.0/aidl
+        
+      - name: 🔍 Aidl faylini topish
+        run: |
+          find /usr/local/lib/android/sdk -name "aidl" -type f
      
 
       - name: 🔍 Buildozer versiyasini tekshirish
@@ -143,13 +147,13 @@ jobs:
       - name: ✅ Android SDK litsenziyalarini qabul qilish
         run: yes | $ANDROID_SDK_ROOT/cmdline-tools/latest/bin/sdkmanager --licenses
 
-      - name: 🔍 Build-Tools katalogini tekshirish
-        run: ls -la $ANDROID_SDK_ROOT/build-tools
+      - name: 🔍 Build-tools katalogini tekshirish
+        run: ls -la /usr/local/lib/android/sdk/build-tools/36.0.0/
 
-      - name: 🔗 Aidl'ga symlink yaratish
+      - name: 🔗 aidl faylini /bin ga symlink qilish
         run: |
-          mkdir -p ~/.buildozer/android/platform/android-sdk/build-tools
-          ln -sf $ANDROID_SDK_ROOT/build-tools/36.0.0 ~/.buildozer/android/platform/android-sdk/build-tools/36.0.0
+          sudo ln -sf /usr/local/lib/android/sdk/build-tools/36.0.0/aidl /usr/bin/aidl
+          ls -la /usr/bin/aidl
 
       #- name: 🔍 Buildozer xatolarini tekshirish
         #run: cat .buildozer/android/platform/build.log || true
@@ -159,6 +163,10 @@ jobs:
           #ls -la .buildozer/android || echo "❌ '.buildozer/android' katalogi topilmadi!"
           #ls -la .buildozer/android/platform || echo "❌ '.buildozer/android/platform' katalogi topilmadi!"
 
+      - name: 🔍 Buildozer aidl yo‘lini tekshirish
+        run: |
+          grep "aidl" .buildozer/android/platform/build.log || echo "❌ aidl log topilmadi!"
+      
       - name: 🛠 Buildozer boshlashdan oldin aidl ni tekshirish
         run: |
           if [ -f "$ANDROID_SDK_ROOT/build-tools/36.0.0/aidl" ]; then
