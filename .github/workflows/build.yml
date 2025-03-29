@@ -144,6 +144,9 @@ jobs:
           mkdir -p ~/.buildozer/android/platform/android-sdk/build-tools
           ln -sf $ANDROID_SDK_ROOT/build-tools/36.0.0 ~/.buildozer/android/platform/android-sdk/build-tools/36.0.0
 
+      - name: 🔍 Buildozer xatolarini tekshirish
+        run: cat .buildozer/android/platform/build.log || true
+      
       - name: 🧹 Buildozer’ni tozalash va qayta qurish
         run: |
           rm -rf ~/.buildozer
