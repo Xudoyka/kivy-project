@@ -127,11 +127,11 @@ jobs:
         run: |
           buildozer --version
 
-      - name: ✅ AIDL uchun bog‘ni foydalanuvchi katalogiga yaratish
+      - name: ✅ AIDL uchun bog‘ yaratish (ruxsat muammosiz)
         run: |
           mkdir -p ~/.local/bin
-          ln -sf /usr/local/lib/android/sdk/build-tools/36.0.0/aidl ~/.local/bin/aidl
-          chmod +x ~/.local/bin/aidl
+          cp /usr/local/lib/android/sdk/build-tools/36.0.0/aidl ~/.local/bin/aidl
+          chmod u+x ~/.local/bin/aidl
           echo "export PATH=$HOME/.local/bin:$PATH" >> ~/.bashrc
           source ~/.bashrc
 
