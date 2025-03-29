@@ -154,3 +154,5 @@ jobs:
         with:
           name: kivy-app-apk
           path: bin/*.apk
+      - name: 🔍 APK fayl qayerda?
+        run: find . -name "*.apk"
