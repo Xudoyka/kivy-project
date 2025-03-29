@@ -130,6 +130,14 @@ jobs:
           ls -la /home/runner/.buildozer/android/platform/android-sdk/build-tools || true
           ls -la /home/runner/.buildozer/android/platform/android-sdk/build-tools/36.0.0 || true
 
+      - name: 🔗 aidl uchun yo‘lni to‘g‘ri sozlash
+        run: |
+          echo "PATH=$ANDROID_SDK_ROOT/build-tools/36.0.0:$PATH" >> $GITHUB_ENV
+          echo "ANDROID_SDK_ROOT=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
+          echo "ANDROID_HOME=$ANDROID_SDK_ROOT" >> $GITHUB_ENV
+          echo "PATH=$ANDROID_SDK_ROOT/platform-tools:$PATH" >> $GITHUB_ENV
+          echo "PATH=$ANDROID_SDK_ROOT/cmdline-tools/latest/bin:$PATH" >> $GITHUB_ENV
+
       - name: 🔍 aidl mavjudligini tekshirish
         run: ls -la /home/runner/.buildozer/android/platform/android-sdk/build-tools/36.0.0
 
@@ -144,13 +152,22 @@ jobs:
           mkdir -p ~/.buildozer/android/platform/android-sdk/build-tools
           ln -sf $ANDROID_SDK_ROOT/build-tools/36.0.0 ~/.buildozer/android/platform/android-sdk/build-tools/36.0.0
 
-      - name: 🔍 Buildozer xatolarini tekshirish
-        run: cat .buildozer/android/platform/build.log || true
-      - name: 🔍 Buildozer kataloglarini tekshirish
+      #- name: 🔍 Buildozer xatolarini tekshirish
+        #run: cat .buildozer/android/platform/build.log || true
+      #- name: 🔍 Buildozer kataloglarini tekshirish
+        #run: |
+          #ls -la .buildozer || echo "❌ '.buildozer' katalogi topilmadi!"
+          #ls -la .buildozer/android || echo "❌ '.buildozer/android' katalogi topilmadi!"
+          #ls -la .buildozer/android/platform || echo "❌ '.buildozer/android/platform' katalogi topilmadi!"
+
+      - name: 🛠 Buildozer boshlashdan oldin aidl ni tekshirish
         run: |
-          ls -la .buildozer || echo "❌ '.buildozer' katalogi topilmadi!"
-          ls -la .buildozer/android || echo "❌ '.buildozer/android' katalogi topilmadi!"
-          ls -la .buildozer/android/platform || echo "❌ '.buildozer/android/platform' katalogi topilmadi!"
+          if [ -f "$ANDROID_SDK_ROOT/build-tools/36.0.0/aidl" ]; then
+            echo "✅ Aidl mavjud!"
+          else
+            echo "❌ Aidl yo‘q, build-tools noto‘g‘ri!"
+            exit 1
+          fi
       
       - name: 🧹 Buildozer’ni tozalash va qayta qurish
         run: |
