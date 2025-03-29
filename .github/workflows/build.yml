@@ -146,6 +146,11 @@ jobs:
 
       - name: 🔍 Buildozer xatolarini tekshirish
         run: cat .buildozer/android/platform/build.log || true
+      - name: 🔍 Buildozer kataloglarini tekshirish
+        run: |
+          ls -la .buildozer || echo "❌ '.buildozer' katalogi topilmadi!"
+          ls -la .buildozer/android || echo "❌ '.buildozer/android' katalogi topilmadi!"
+          ls -la .buildozer/android/platform || echo "❌ '.buildozer/android/platform' katalogi topilmadi!"
       
       - name: 🧹 Buildozer’ni tozalash va qayta qurish
         run: |
