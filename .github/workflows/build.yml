@@ -190,6 +190,11 @@ jobs:
         #run: |
           #buildozer -v android debug > buildozer_log.txt 2>&1
           #cat buildozer_log.txt
+
+      - name: 🛠  tekshirish
+        run: |
+          echo $ANDROID_HOME
+          echo $ANDROID_SDK_ROOT
       
       - name: 🧹 Buildozer’ni tozalash va qayta qurish
         run: |
