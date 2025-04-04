@@ -1,20 +1,22 @@
 [app]
-#title = My Application
-title = MyApp
-package.name = myapp
+
+title = HavoPosboni
+source.main = 4 birlashgan tayyor 1.py
+package.name = HavoHosboni
 #package.domain = org.test
 package.domain = org.example
+
 source.dir = .
-source.include_exts = py,png,jpg,kv,atlas
+source.include_exts = py,png,jpg,kv,pdf,jpeg,atlas
 #version = 0.1
 version = 1.0
 requirements = python3,kivy
 orientation = portrait
 fullscreen = 0
-
+osx.kivy_version = 2.1.0
 [buildozer]
 log_level = 2
-
+warn_on_root = 1
 
 
 [android]
